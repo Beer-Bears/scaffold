@@ -37,7 +37,7 @@ Scaffold transforms your source code into a living knowledge graph stored in a g
 <details>
 <summary><strong> Usecase Schema </strong> </summary>
 <div align="center" style="display: block; font-weight: bold; margin-block-start: 1em; margin-block-end: 1em;">
-<a name="logo" href="https://www.aregtech.com"><img align="center" src="https://raw.githubusercontent.com/Beer-Bears/scaffold/main/docs/img/usecase-diagram.png" alt="Scaffold Architecture" style="width:100%;height:100%"/></a></div>
+<a name="logo" href="https://www.aregtech.com"><img align="center" src="https://raw.githubusercontent.com/Beer-Bears/scaffold/main/docs/img/usecase-diagram.png" alt="Scaffold Usecase Diagram" style="width:100%;height:100%"/></a></div>
 </details>
 
 ## Project Organization
