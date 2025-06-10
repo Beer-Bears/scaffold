@@ -1,0 +1,7 @@
+version: '3.8'
+services:
+  scaffold-mcp:
+    build:
+      context: .
+    container_name: scaffold-mcp-prod
+    restart: unless-stopped
