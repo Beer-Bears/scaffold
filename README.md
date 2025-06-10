@@ -1,5 +1,5 @@
 <h1 align="center" style="display: block; font-size: 2.5em; font-weight: bold; margin-block-start: 1em; margin-block-end: 1em;">
-<a name="logo" href="https://www.aregtech.com"><img align="center" src="https://raw.githubusercontent.com/Beer-Bears/scaffold/main/docs/img/scaffold-logo.png" alt="Scaffold Banner" style="width:100%;height:100%"/></a>
+<a name="logo" href="https://raw.githubusercontent.com/Beer-Bears/scaffold/main/docs/img/scaffold-logo.png"><img align="center" src="https://raw.githubusercontent.com/Beer-Bears/scaffold/main/docs/img/scaffold-logo.png" alt="Scaffold Banner" style="width:100%;height:100%"/></a>
   <br /><br /><strong>Scaffold</strong>
 </h1>
 
@@ -32,12 +32,22 @@ Scaffold transforms your source code into a living knowledge graph stored in a g
 <details>
 <summary><strong> Architecture Schema</strong> </summary>
 <div align="center" style="display: block; font-weight: bold; margin-block-start: 1em; margin-block-end: 1em;">
-<a name="logo" href="https://www.aregtech.com"><img align="center" src="https://raw.githubusercontent.com/Beer-Bears/scaffold/main/docs/img/architecture.png" alt="Scaffold Architecture" style="width:100%;height:100%"/></a></div>
+<a name="logo" href="https://raw.githubusercontent.com/Beer-Bears/scaffold/main/docs/img/architecture.png"><img align="center" src="https://raw.githubusercontent.com/Beer-Bears/scaffold/main/docs/img/architecture.png" alt="Scaffold Architecture" style="width:100%;height:100%"/></a></div>
 </details>
 <details>
 <summary><strong> Usecase Schema </strong> </summary>
 <div align="center" style="display: block; font-weight: bold; margin-block-start: 1em; margin-block-end: 1em;">
-<a name="logo" href="https://www.aregtech.com"><img align="center" src="https://raw.githubusercontent.com/Beer-Bears/scaffold/main/docs/img/usecase-diagram.png" alt="Scaffold Usecase Diagram" style="width:100%;height:100%"/></a></div>
+<a name="logo" href="https://raw.githubusercontent.com/Beer-Bears/scaffold/main/docs/img/usecase-diagram.png"><img align="center" src="https://raw.githubusercontent.com/Beer-Bears/scaffold/main/docs/img/usecase-diagram.png" alt="Scaffold Usecase Diagram" style="width:100%;height:100%"/></a></div>
+</details>
+<details>
+<summary><strong> Interfaces Schema</strong> </summary>
+<div align="center" style="display: block; font-weight: bold; margin-block-start: 1em; margin-block-end: 1em;">
+<a name="logo" href="https://raw.githubusercontent.com/Beer-Bears/scaffold/main/docs/img/interfaces-diagram.png"><img align="center" src="https://raw.githubusercontent.com/Beer-Bears/scaffold/main/docs/img/interfaces-diagram.png" alt="Scaffold Interfaces" style="width:100%;height:100%"/></a></div>
+</details>
+<details>
+<summary><strong> Internal Organization Schema</strong> </summary>
+<div align="center" style="display: block; font-weight: bold; margin-block-start: 1em; margin-block-end: 1em;">
+<a name="logo" href="https://raw.githubusercontent.com/Beer-Bears/scaffold/main/docs/img/internals-diagram.png"><img align="center" src="https://raw.githubusercontent.com/Beer-Bears/scaffold/main/docs/img/internals-diagram.png" alt="Scaffold Internal Organization" style="width:100%;height:100%"/></a></div>
 </details>
 
 ## Project Organization
@@ -73,7 +83,7 @@ Unlike traditional LLMs that rely solely on their training data, RAG systems:
 <summary><strong>How does Graph RAG work?</strong></summary>
 
 Graph RAG extends traditional RAG by representing knowledge as interconnected entities in a graph database.
-```
+
 </details>
 
 ## References & Resources
