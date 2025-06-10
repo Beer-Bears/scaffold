@@ -48,7 +48,7 @@ Scaffold transforms your source code into a living knowledge graph stored in a g
 | Team Member     | Telegram Alias   | Email Address           | Track         | Responsibilities                          |
 | :-------------- | :--------------- | :---------------------- | :------------ | :---------------------------------------- |
 | Melnikov Sergei        | @peplxx        | s.melnikov@innopolis.university        | Product Owner       | Team Management, RAG Algorithms |
-| Razmakhov Serhei      | @onemoreslacker       | s.razmakhov@innopolis.university         | Developer      | Languages parsers, AT Generation |
+| Razmakhov Sergei      | @onemoreslacker       | s.razmakhov@innopolis.university         | Developer      | Languages parsers, AT Generation |
 | Prosvirkin Dmitry | @dmitry5567          | d.prosvirkin@innopolis.university          | Developer        | Vector, Graph Database Management|
 | Mashenkov Timofei  | @mashfeii       | t.mashenkov@innopolis.university      | Developer  |  Context Fethcing Algotihm |
 | Glazov Sergei      | @pushkin404          | s.glazov@innopolis.university       |  QA        | QA Research, MCP Analysis|
