@@ -1,6 +1,7 @@
 from pydantic_settings import BaseSettings
 from pydantic import Field
 
+
 class Settings(BaseSettings):
     database_url: str = Field(env="DATABASE_URL")
     neo4j_uri: str = Field(env="NEO4J_URI")
@@ -11,5 +12,6 @@ class Settings(BaseSettings):
         env_file = ".env"
         env_file_encoding = "utf-8"
         extra = "ignore"
+
 
 settings = Settings()
