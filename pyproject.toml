@@ -8,6 +8,10 @@ package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.11"
+sqlalchemy = "^2.0.41"
+neo4j = "^5.28.1"
+pydantic-settings = "^2.9.1"
+asyncpg = "^0.30.0"
 
 
 [build-system]
