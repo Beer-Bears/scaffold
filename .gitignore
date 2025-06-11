@@ -1,2 +1,6 @@
 .DS_Store
+.idea
 .env
+.env.db
+*.pyc
+__pycache__/

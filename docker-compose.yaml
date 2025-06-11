@@ -1,7 +1,51 @@
 version: '3.8'
+
 services:
   scaffold-mcp:
     build:
       context: .
     container_name: scaffold-mcp-prod
     restart: unless-stopped
+    env_file:
+      - .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      neo4j:
+        condition: service_healthy
+
+  postgres:
+    image: postgres:15
+    container_name: scaffold-postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 2s
+      timeout: 1s
+      retries: 5
+      start_period: 5s
+
+  neo4j:
+    image: neo4j:5
+    container_name: scaffold-neo4j
+    restart: unless-stopped
+    environment:
+      - NEO4J_server_config_strict__validation_enabled=false
+      - NEO4J_AUTH=${NEO4J_AUTH}
+      - NEO4J_USER=${NEO4J_USER}
+      - NEO4J_PASSWORD=${NEO4J_PASSWORD}
+    ports:
+      - "7474:7474"   # Web UI
+      - "7687:7687"   # Bolt
+    healthcheck:
+      test: ["CMD-SHELL", "cypher-shell -u $NEO4J_USER -p $NEO4J_PASSWORD 'RETURN 1'"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
