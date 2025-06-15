@@ -161,6 +161,28 @@ pandas = ["numpy (>=1.7.0,<3.0.0)", "pandas (>=1.1.0,<3.0.0)"]
 pyarrow = ["pyarrow (>=1.0.0)"]
 
 [[package]]
+name = "neomodel"
+version = "5.5.0"
+description = "An object mapper for the neo4j graph database."
+optional = false
+python-versions = ">=3.9"
+files = [
+    {file = "neomodel-5.5.0-py3-none-any.whl", hash = "sha256:47eadac6767c1db826bd3a3674e56e203c70142a70907239a56ee141a1bd42b6"},
+    {file = "neomodel-5.5.0.tar.gz", hash = "sha256:b324b9ff46140d1efcff488584a87ddf3d9f2e991cb0b1e5810d6223a3f5b09e"},
+]
+
+[package.dependencies]
+neo4j = ">=5.28.1,<5.29.0"
+
+[package.extras]
+dev = ["black", "isort", "mypy", "pandas-stubs", "pre-commit", "pytest (>=7.1)", "pytest-asyncio", "pytest-cov (>=4.0)", "pytest-mock", "types-pytz", "types-shapely", "unasync"]
+extras = ["numpy", "pandas", "shapely"]
+numpy = ["numpy"]
+pandas = ["pandas"]
+rust-driver-ext = ["neo4j-rust-ext (==5.28.1.0)"]
+shapely = ["Shapely (>=2.0.0)"]
+
+[[package]]
 name = "pydantic"
 version = "2.11.5"
 description = "Data validation using Python type hints"
@@ -463,4 +485,4 @@ typing-extensions = ">=4.12.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "aa42eb277d94516f8bcd07ea41c0a9b6a774e4f4b17939c2febfb5c340485b58"
+content-hash = "87dcf97bd5c8998c71d61e79b69c177f3a1be71c2c5885af9eeb06d6e70ea0cc"
