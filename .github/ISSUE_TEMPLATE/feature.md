@@ -4,18 +4,23 @@ about: New feature
 title: ''
 labels: ''
 assignees: ''
+---
+
+## 💡 New Feature
+
+Describe the feature.  
+_Example: Add the ability to export reports as PDF._
 
 ---
 
-## 🧐 Is your feature request related to a problem? Please describe.
-A clear and concise description of what the problem is.  
-_Ex. I'm always frustrated when [...]_
+## ❌ Related Problem
 
-## ✅ Describe the solution you'd like
-A clear and concise description of what you want to happen.
+If this feature solves a problem, describe it here.  
+_Example: Currently, there’s no way to save a report in a shareable format for clients._
 
-## 💡 Describe alternatives you've considered
-A clear and concise description of any alternative solutions or features you've considered.
+---
 
-## 📝 Additional context
-Add any other context or screenshots about the feature request here.
+## 🧩 Additional Context (optional)
+
+Add any mockups, links, examples, or references that could help.  
+_Example: This is how it’s done in [this other tool](https://example.com)._
