@@ -20,6 +20,9 @@ jobs:
       - name: Set up Docker
         uses: docker/setup-buildx-action@v3
 
+      - name: Tests .env
+        run: cp .env.example .env
+
       - name: Validate compose.yaml
         run: docker compose config
 
