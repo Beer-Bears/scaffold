@@ -6,7 +6,7 @@ on:
 
 permissions:
   pull-requests: write
-  
+
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -27,4 +27,4 @@ jobs:
 
       - name: Validate PR Title
         run: |
-          echo "${{ steps.extract_title.outputs.title }}" | commitlint --config=@commitlint/config-conventional
+          echo "${{ steps.extract_title.outputs.title }}" | commitlint 
