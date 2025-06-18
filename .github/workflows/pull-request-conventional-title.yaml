@@ -8,23 +8,9 @@ permissions:
   pull-requests: write
 
 jobs:
-  lint:
+  conventional-check:
     runs-on: ubuntu-latest
     steps:
-      - name: Extract PR Title
-        id: extract_title
-        run: |
-          TITLE="${{ github.event.pull_request.title }}"
-          echo "title=${TITLE}" >> $GITHUB_OUTPUT
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Install commitlint
-        run: npm install -g @commitlint/cli @commitlint/config-conventional
-
-      - name: Validate PR Title
-        run: |
-          echo "${{ steps.extract_title.outputs.title }}" | npx commitlint --config=./commitlint.config.mjs
+        # Use Conventional PR Title from: http://github.com/marketplace/actions/conventional-pr-title
+      - name: Conventional PR Title
+        uses: aslafy-z/conventional-pr-title-action@v3.2.0
