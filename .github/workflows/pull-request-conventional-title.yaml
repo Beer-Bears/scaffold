@@ -6,23 +6,24 @@ on:
 
 permissions:
   pull-requests: read
-
 jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - name: Check PR Title
-        uses: actions/checkout@v4
+      - name: Extract PR Title
+        id: extract_title
+        run: |
+          TITLE="${{ github.event.pull_request.title }}"
+          echo "title=${TITLE}" >> $GITHUB_OUTPUT
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
+
       - name: Install commitlint
         run: npm install -g @commitlint/cli @commitlint/config-conventional
+
       - name: Validate PR Title
         run: |
-          TITLE=$(gh pr view $PR_NUMBER --json title --jq '.title')
-          echo "$TITLE" | commitlint --config=@commitlint/config-conventional
-        env:
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          echo "${{ steps.extract_title.outputs.title }}" | commitlint --config=@commitlint/config-conventional
