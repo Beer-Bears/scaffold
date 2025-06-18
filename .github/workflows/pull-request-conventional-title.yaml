@@ -4,13 +4,13 @@ on:
   pull_request:
     types: [opened, edited, reopened, synchronize]
 
-permissions:
-  pull-requests: write
-
 jobs:
-  conventional-check:
+  lint:
     runs-on: ubuntu-latest
+    permissions:
+      statuses: write
     steps:
         # Use Conventional PR Title from: http://github.com/marketplace/actions/conventional-pr-title
-      - name: Conventional PR Title
-        uses: aslafy-z/conventional-pr-title-action@v3.2.0
+      - uses: aslafy-z/conventional-pr-title-action@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
