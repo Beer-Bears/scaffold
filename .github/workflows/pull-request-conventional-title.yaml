@@ -5,7 +5,8 @@ on:
     types: [opened, edited, reopened, synchronize]
 
 permissions:
-  pull-requests: read
+  pull-requests: write
+  
 jobs:
   lint:
     runs-on: ubuntu-latest
