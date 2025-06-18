@@ -27,4 +27,4 @@ jobs:
 
       - name: Validate PR Title
         run: |
-          echo "${{ steps.extract_title.outputs.title }}" | commitlint 
+          echo "${{ steps.extract_title.outputs.title }}" | npx commitlint --config=@commitlint/config-conventional
