@@ -1,9 +1,7 @@
 <h1 align="center" style="display: block; font-size: 2.5em; font-weight: bold; margin-block-start: 1em; margin-block-end: 1em;">
-<a name="logo" href="https://raw.githubusercontent.com/Beer-Bears/scaffold/main/docs/img/scaffold-logo.png"><img align="center" src="https://raw.githubusercontent.com/Beer-Bears/scaffold/main/docs/img/scaffold-logo.png" alt="Scaffold Banner" style="width:100%;height:100%"/></a>
-  <br /><br /><strong>Scaffold</strong>
+<a name="logo" href="https://raw.githubusercontent.com/Beer-Bears/scaffold/main/docs/img/scaffold-logo.png"><img align="center" src="https://raw.githubusercontent.com/Beer-Bears/scaffold/main/docs/img/scaffold-logo.png" alt="Scaffold Banner" style="width:85%;height:100%"/></a>
 </h1>
 
-*Scaffold - a Specialized RAG (Retrieval-Augmented Generation) system for large codebases
 ## Introduction
 
 **Scaffold** is a specialized RAG (Retrieval-Augmented Generation) system designed to revolutionize how development teams interact with large codebases. Born from real-world frustrations with traditional documentation and AI-assisted development, Scaffold provides the structural foundation AI agents need to effectively construct, maintain, and repair complex software projects.
