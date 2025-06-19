@@ -1,9 +1,7 @@
 <h1 align="center" style="display: block; font-size: 2.5em; font-weight: bold; margin-block-start: 1em; margin-block-end: 1em;">
-<a name="logo" href="https://raw.githubusercontent.com/Beer-Bears/scaffold/main/docs/img/scaffold-logo.png"><img align="center" src="https://raw.githubusercontent.com/Beer-Bears/scaffold/main/docs/img/scaffold-logo.png" alt="Scaffold Banner" style="width:100%;height:100%"/></a>
-  <br /><br /><strong>Scaffold</strong>
+<a name="logo" href="https://raw.githubusercontent.com/Beer-Bears/scaffold/main/docs/img/scaffold-logo.png"><img align="center" src="https://raw.githubusercontent.com/Beer-Bears/scaffold/main/docs/img/scaffold-logo.png" alt="Scaffold Banner" style="width:85%;height:100%"/></a>
 </h1>
 
-*Scaffold - a Specialized RAG (Retrieval-Augmented Generation) system for large codebases
 ## Introduction
 
 **Scaffold** is a specialized RAG (Retrieval-Augmented Generation) system designed to revolutionize how development teams interact with large codebases. Born from real-world frustrations with traditional documentation and AI-assisted development, Scaffold provides the structural foundation AI agents need to effectively construct, maintain, and repair complex software projects.
@@ -27,7 +25,10 @@ Scaffold transforms your source code into a living knowledge graph stored in a g
 - Supports construction, maintenance, and refactoring workflows
 > Like its physical namesake, Scaffold provides the temporary support structure needed to build something great - then disappears when the work is done.
 
-## Schemas
+
+## Project Organization
+
+### Schemas
 
 <details>
 <summary><strong> Architecture Schema</strong> </summary>
@@ -50,18 +51,31 @@ Scaffold transforms your source code into a living knowledge graph stored in a g
 <a name="logo" href="https://raw.githubusercontent.com/Beer-Bears/scaffold/main/docs/img/internals-diagram.png"><img align="center" src="https://raw.githubusercontent.com/Beer-Bears/scaffold/main/docs/img/internals-diagram.png" alt="Scaffold Internal Organization" style="width:100%;height:100%"/></a></div>
 </details>
 
-## Project Organization
+### Project Structure
 
+```
+.
+├── docs
+│   ├── docmost   # Docmost Configuration
+│   ├── img       # Static Images
+│   └── research  # Research reports
+└── src
+    ├── core      # RAG Context Fetching Algorithms
+    ├── database  # Graph/Vector Database Logic
+    ├── generator # Abstract Tree Generator
+    ├── mcp       # MCP Interface
+    └── parsers   # AST Parcers
+```
 
 
 ## Team
 | Team Member     | Telegram Alias   | Email Address           | Track         | Responsibilities                          |
 | :-------------- | :--------------- | :---------------------- | :------------ | :---------------------------------------- |
-| Melnikov Sergei        | @peplxx        | s.melnikov@innopolis.university        | Product Owner       | Team Management, RAG Algorithms |
+| Melnikov Sergei        | @peplxx        | s.melnikov@innopolis.university        | Product Owner       | Team Management, RAG Fetching Algorithms |
 | Razmakhov Sergei      | @onemoreslacker       | s.razmakhov@innopolis.university         | Developer      | Languages parsers, AT Generation |
 | Prosvirkin Dmitry | @dmitry5567          | d.prosvirkin@innopolis.university          | Developer        | Vector, Graph Database Management|
-| Mashenkov Timofei  | @mashfeii       | t.mashenkov@innopolis.university      | Developer  |  Context Fethcing Algotihm |
-| Glazov Sergei      | @pushkin404          | s.glazov@innopolis.university       |  QA        | QA Research, MCP Analysis|
+| Mashenkov Timofei  | @mashfeii       | t.mashenkov@innopolis.university      | Developer, Researcher  |  MCP, Signal interfaces |
+| Glazov Sergei      | @pushkin404          | s.glazov@innopolis.university       |  QA, Researcher     | QA, Market Research|
 
 ## FAQ
 
@@ -91,6 +105,10 @@ Graph RAG extends traditional RAG by representing knowledge as interconnected en
 - [Excalidraw Board](https://excalidraw.com/#json=DNp6vtk7Ps-d8IqUnFX5p,F8fM6s7Bx-8FcoYoUmuDmA)
 
 - [Google Document](https://docs.google.com/document/d/1K4CPKvia2kNnlKm9MNFnxmQRqHM1KS_lJMJzueEnQVE/edit?usp=sharing)
+
+- [Weekly Report](https://github.com/Beer-Bears/beer-bears/tree/master/content/docs/2025/beer-bears)
+
+- [Weekly Role Distibution Table](https://docs.google.com/spreadsheets/d/1uc_GRhpqoXTGrU90zRO2Lp6TWDvCVzt__PE6KlVH9DU/edit?gid=0#gid=0)
 
 ### Useful Themed Videos
 - [What is Retrieval-Augmented Generation (RAG)?](https://www.youtube.com/watch?v=T-D1OfcDW1M)
