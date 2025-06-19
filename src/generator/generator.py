@@ -19,8 +19,6 @@ def save_graph_to_db(graph: dict[int, Node]) -> None:
     make_db_relations(id_to_db_node, graph)
 
 
-
-
 def make_db_relations(id_to_db_node: dict[int, StructuredNode], graph: dict[int, Node]):
     """
     Устанавливает связи в БД
@@ -33,8 +31,6 @@ def make_db_relations(id_to_db_node: dict[int, StructuredNode], graph: dict[int,
         db_node_relationship = relations_of_db_node(id_to_db_node, graph[node_id].relationships)
 
         make_db_relations_for_node(db_node, db_node_relationship)
-
-
 
 
 def make_db_nodes(graph: dict[int, Node]) -> dict[int, StructuredNode]:
@@ -64,19 +60,17 @@ def make_db_nodes(graph: dict[int, Node]) -> dict[int, StructuredNode]:
 
 
 def make_db_relation_for_node(parent: StructuredNode, child: StructuredNode, rel: RelationshipType):
-    match rel:
-        case RelationshipType.DEFINE:
-            if isinstance(parent, ClassNode):
-                parent.defines_classes.connect(child)
-            elif isinstance(parent, MethodNode):
-                parent.defines_methods.connect(child)
-
-        case RelationshipType.USE:
-            if isinstance(parent, ClassNode):
-                parent.uses_classes.connect(child)
-            elif isinstance(parent, MethodNode):
-                parent.uses_methods.connect(child)
-
+    match parent, rel:
+        case ClassNode(), RelationshipType.DEFINE:
+            parent.defines_classes.connect(child)
+        case MethodNode(), RelationshipType.DEFINE:
+            parent.defines_methods.connect(child)
+        case ClassNode(), RelationshipType.USE:
+            parent.uses_classes.connect(child)
+        case MethodNode(), RelationshipType.USE:
+            parent.uses_methods.connect(child)
+        case _:
+            raise ValueError(f"Unsupported combination: {type(parent).__name__} with relation {rel}")
 
 def make_db_relations_for_node(db_node: StructuredNode, relations: list[tuple[RelationshipType, StructuredNode]]):
     for rel, db_target in relations:
@@ -91,7 +85,7 @@ def relations_of_db_node(db_nodes: dict[int, StructuredNode], graph_relationship
     ]
 
 
-def node_type_to_model(_type: NodeType) -> Optional[Type[StructuredNode]]:
+def node_type_to_model(_type: NodeType) -> Type[StructuredNode]:
     """
     Сопоставление NodeType -> StructuredNode (neomodel)
     """
@@ -101,7 +95,7 @@ def node_type_to_model(_type: NodeType) -> Optional[Type[StructuredNode]]:
         NodeType.METHOD: MethodNode
     }
 
-    return models.get(_type)
-
-
-
+    model = models.get(_type)
+    if model is None:
+        raise ValueError(f"Unsupported NodeType: {_type}")
+    return model
