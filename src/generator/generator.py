@@ -82,9 +82,9 @@ class DbRelations:
 
     @staticmethod
     def relations_of_db_node(db_nodes: dict[int, StructuredNode], graph_relationships: list[Relationship]) -> list[
-        tuple[RelationshipType, StructuredNode]]:
+        list[RelationshipType, StructuredNode]]:
         return [
-            (rel.relation_type, db_nodes[rel.node])
+            [rel.relation_type, db_nodes[rel.node]]
             for rel in graph_relationships
         ]
 
@@ -121,6 +121,6 @@ class DbRelations:
                     f"Unsupported combination: {type(parent).__name__} -> {type(child).__name__} with relation {rel}")
 
     @staticmethod
-    def make_db_relations_for_node(db_node: StructuredNode, relations: list[tuple[RelationshipType, StructuredNode]]):
+    def make_db_relations_for_node(db_node: StructuredNode, relations: list[list[RelationshipType, StructuredNode]]):
         for rel, db_target in relations:
             DbRelations.make_db_relation_for_node(db_node, db_target, rel)

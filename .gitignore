@@ -4,3 +4,4 @@
 .env.db
 *.pyc
 __pycache__/
+codebase/
