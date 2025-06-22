@@ -1,18 +1,6 @@
-# Running the Scaffold MCP Server
+# Testing the Scaffold MCP Server
 
-## 1. Install dependencies (if not already):
-
-```bash
-poetry install
-```
-
-## 2. Run the MCP server:
-
-```bash
-poetry run python -m src.mcp.server
-```
-
-The server will start on http://localhost:8000 and expose the `mock_llm` tool endpoint.
+After building and running the container (or starting the app via your main entrypoint), you can test the MCP server as follows:
 
 ---
 
