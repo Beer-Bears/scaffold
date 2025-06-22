@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Optional
 
-from src.generator.types import NodeType, RelationshipType
+from src.generator.graph_types import NodeType, RelationshipType
 
 
 @dataclass
@@ -24,7 +24,7 @@ class MetaInfo:
 
 @dataclass
 class Node:
-    
+
     _type: NodeType
     meta: MetaInfo
     relationships: list[Relationship]

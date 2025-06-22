@@ -1,4 +1,4 @@
-from neomodel import StringProperty, IntegerProperty
+from neomodel import IntegerProperty, StringProperty
 
 from src.generator.models import MetaInfo
 
@@ -11,7 +11,7 @@ class ObjectMetaMixin:
     docstring = StringProperty()
 
 
-a = set(filter(lambda x: '__' not in x, ObjectMetaMixin.__dict__))
+a = set(filter(lambda x: "__" not in x, ObjectMetaMixin.__dict__))
 b = set(MetaInfo.__dataclass_fields__.keys())
 
 assert a == b, f"Fields do not match! (ObjectMetaMixin, MetaInfo). Difference: {a - b}"

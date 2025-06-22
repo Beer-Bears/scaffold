@@ -2,7 +2,7 @@ from neomodel import db
 from sqlalchemy import text
 
 from src.database.connection import get_pg_session, init_neo4j
-from src.database.models.nodes import FileNode, ClassNode, MethodNode
+from src.database.models.nodes import ClassNode, FileNode, MethodNode
 
 
 async def check_pg():
@@ -31,7 +31,7 @@ async def check():
         path="services/payment_service.py",
         start_line=1,
         end_line=120,
-        docstring="Файл с сервисами для обработки платежей"
+        docstring="Файл с сервисами для обработки платежей",
     ).save()
 
     # Классы
@@ -40,7 +40,7 @@ async def check():
         path="services/payment_service.py",
         start_line=5,
         end_line=90,
-        docstring="Сервис, обрабатывающий платёжные транзакции"
+        docstring="Сервис, обрабатывающий платёжные транзакции",
     ).save()
 
     invoice_generator = ClassNode(
@@ -48,7 +48,7 @@ async def check():
         path="services/payment_service.py",
         start_line=92,
         end_line=119,
-        docstring="Генерирует инвойсы после оплаты"
+        docstring="Генерирует инвойсы после оплаты",
     ).save()
 
     # Методы
@@ -57,7 +57,7 @@ async def check():
         path="services/payment_service.py",
         start_line=10,
         end_line=30,
-        docstring="Обрабатывает платёж клиента"
+        docstring="Обрабатывает платёж клиента",
     ).save()
 
     validate_card = MethodNode(
@@ -65,7 +65,7 @@ async def check():
         path="services/payment_service.py",
         start_line=32,
         end_line=50,
-        docstring="Проверяет валидность карты"
+        docstring="Проверяет валидность карты",
     ).save()
 
     generate_invoice = MethodNode(
@@ -73,7 +73,7 @@ async def check():
         path="services/payment_service.py",
         start_line=93,
         end_line=110,
-        docstring="Создаёт PDF-инвойс"
+        docstring="Создаёт PDF-инвойс",
     ).save()
 
     # Создание связей
@@ -90,4 +90,3 @@ async def check():
     process_payment.uses_methods.connect(validate_card)
     process_payment.uses_classes.connect(invoice_generator)
     generate_invoice.uses_classes.connect(payment_service)
-

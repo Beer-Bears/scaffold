@@ -18,9 +18,15 @@ neomodel = "^5.5.0"
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.4.1"
 pytest-asyncio = "^0.23.8"
-
-[tool.poetry.group.dev.dependencies]
+mypy = "^1.16.1"
 pre-commit = "^4.2.0"
+
+[tool.black]
+line-length = 88
+
+[tool.isort]
+profile = "black"
+line_length = 88
 
 [build-system]
 requires = ["poetry-core"]
