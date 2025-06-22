@@ -1,5 +1,8 @@
 name: Run pre-commit checks
 
+permissions:
+  contents: read
+
 on:
   push:
     branches: [main]
