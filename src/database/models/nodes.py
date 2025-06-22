@@ -9,6 +9,9 @@ from src.generator.graph_types import RelationshipType as RT
 
 class MethodNode(StructuredNode, ObjectMetaMixin):
     # DEFINE
+    defines_classes = rTO(NT.CLASS, RT.DEFINE)
+    defines_methods = rTO(NT.METHOD, RT.DEFINE)
+
     defined_in_file = rFrom(NT.FILE, RT.DEFINE)
     defined_in_class = rFrom(NT.CLASS, RT.DEFINE)
 
