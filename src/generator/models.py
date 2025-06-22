@@ -9,12 +9,13 @@ from src.generator.types import NodeType, RelationshipType
 @dataclass
 class Relationship:
     relation_type: RelationshipType
-    parent: Node
-    node: Node
+    parent: int
+    node: int
 
 
 @dataclass
 class MetaInfo:
+    name: str
     path: str
     start_line: int
     end_line: int
@@ -23,6 +24,7 @@ class MetaInfo:
 
 @dataclass
 class Node:
+    
     _type: NodeType
     meta: MetaInfo
     relationships: list[Relationship]

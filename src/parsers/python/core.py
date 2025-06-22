@@ -182,20 +182,20 @@ class Parser:
 
             with open(file_path, 'r', encoding='utf-8') as f:
                 line_count = len(f.readlines())
-            meta = MetaInfo(path=relative_path_str, start_line=1, end_line=line_count, docstring=module_docstring)
+            meta = MetaInfo(name=f.name ,path=relative_path_str, start_line=1, end_line=line_count, docstring=module_docstring)
             file_node = Node(_type=NodeType.FILE, meta=meta, relationships=[])
             self.nodes[id(file_node)] = file_node
             self.node_id_map[relative_path_str] = id(file_node)
 
             for name, elem in file_deps.classes.items():
-                meta = MetaInfo(path=relative_path_str, start_line=elem.line_number, end_line=elem.end_line, docstring=elem.docstring)
+                meta = MetaInfo(name=name,path=relative_path_str, start_line=elem.line_number, end_line=elem.end_line, docstring=elem.docstring)
                 class_node = Node(_type=NodeType.CLASS, meta=meta, relationships=[])
                 self.nodes[id(class_node)] = class_node
                 self.node_id_map[name] = id(class_node)
 
             if 'FUNCTION' in {member.name for member in NodeType}:
                 for name, elem in file_deps.functions.items():
-                    meta = MetaInfo(path=relative_path_str, start_line=elem.line_number, end_line=elem.end_line, docstring=elem.docstring)
+                    meta = MetaInfo(name=name,path=relative_path_str, start_line=elem.line_number, end_line=elem.end_line, docstring=elem.docstring)
                     function_node = Node(_type=NodeType.FUNCTION, meta=meta, relationships=[])
                     self.nodes[id(function_node)] = function_node
                     self.node_id_map[name] = id(function_node)
@@ -203,7 +203,7 @@ class Parser:
             for c_name, methods in file_deps.methods.items():
                 for m_name, elem in methods.items():
                     method_id_str = f"{c_name}.{m_name}"
-                    meta = MetaInfo(path=relative_path_str, start_line=elem.line_number, end_line=elem.end_line, docstring=elem.docstring)
+                    meta = MetaInfo(name=m_name,path=relative_path_str, start_line=elem.line_number, end_line=elem.end_line, docstring=elem.docstring)
                     method_node = Node(_type=NodeType.METHOD, meta=meta, relationships=[])
                     self.nodes[id(method_node)] = method_node
                     self.node_id_map[method_id_str] = id(method_node)
@@ -218,7 +218,7 @@ class Parser:
                 defined_node_id = self.node_id_map.get(name)
                 if defined_node_id:
                     defined_node = self.nodes[defined_node_id]
-                    rel = Relationship(relation_type=RelationshipType.DEFINE, parent=file_node, node=defined_node)
+                    rel = Relationship(relation_type=RelationshipType.DEFINE, parent=file_node_id, node=defined_node_id)
                     file_node.relationships.append(rel)
 
             for c_name, methods in deps.methods.items():
@@ -232,7 +232,7 @@ class Parser:
                     method_node_id = self.node_id_map.get(method_id_str)
                     if method_node_id:
                         method_node = self.nodes[method_node_id]
-                        rel = Relationship(relation_type=RelationshipType.DEFINE, parent=class_node, node=method_node)
+                        rel = Relationship(relation_type=RelationshipType.DEFINE, parent=class_node_id, node=method_node_id)
                         class_node.relationships.append(rel)
 
             if 'INHERIT' in {member.name for member in RelationshipType}:
@@ -244,7 +244,7 @@ class Parser:
                             base_node_id = self.node_id_map.get(base_name)
                             if base_node_id:
                                 base_node = self.nodes[base_node_id]
-                                rel = Relationship(relation_type=RelationshipType.INHERIT, parent=class_node, node=base_node)
+                                rel = Relationship(relation_type=RelationshipType.INHERIT, parent=class_node_id, node=base_node_id)
                                 class_node.relationships.append(rel)
 
             for caller_id_str, callees_str in deps.function_calls.items():
@@ -255,7 +255,7 @@ class Parser:
                         callee_node_id = self.node_id_map.get(callee_id_str)
                         if callee_node_id:
                             callee_node = self.nodes[callee_node_id]
-                            rel = Relationship(relation_type=RelationshipType.USE, parent=caller_node, node=callee_node)
+                            rel = Relationship(relation_type=RelationshipType.USE, parent=caller_node_id, node=callee_node_id)
                             caller_node.relationships.append(rel)
 
     def print_node_graph(self):

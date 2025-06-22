@@ -5,7 +5,6 @@ services:
     build:
       context: .
     container_name: scaffold-mcp-prod
-    restart: unless-stopped
     env_file:
       - .env
     depends_on:

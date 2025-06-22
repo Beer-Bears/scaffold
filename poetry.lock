@@ -644,6 +644,27 @@ files = [
     {file = "pycparser-2.22-py3-none-any.whl", hash = "sha256:c3702b6d3dd8c7abc1afa565d7e63d53a1d0bd86cdc24edd75470f4de499cfcc"},
     {file = "pycparser-2.22.tar.gz", hash = "sha256:491c8be9c040f5390f5bf44a5b07752bd07f56edf992381b05c701439eec10f6"},
 ]
+[[package]]
+name = "neomodel"
+version = "5.5.0"
+description = "An object mapper for the neo4j graph database."
+optional = false
+python-versions = ">=3.9"
+files = [
+    {file = "neomodel-5.5.0-py3-none-any.whl", hash = "sha256:47eadac6767c1db826bd3a3674e56e203c70142a70907239a56ee141a1bd42b6"},
+    {file = "neomodel-5.5.0.tar.gz", hash = "sha256:b324b9ff46140d1efcff488584a87ddf3d9f2e991cb0b1e5810d6223a3f5b09e"},
+]
+
+[package.dependencies]
+neo4j = ">=5.28.1,<5.29.0"
+
+[package.extras]
+dev = ["black", "isort", "mypy", "pandas-stubs", "pre-commit", "pytest (>=7.1)", "pytest-asyncio", "pytest-cov (>=4.0)", "pytest-mock", "types-pytz", "types-shapely", "unasync"]
+extras = ["numpy", "pandas", "shapely"]
+numpy = ["numpy"]
+pandas = ["pandas"]
+rust-driver-ext = ["neo4j-rust-ext (==5.28.1.0)"]
+shapely = ["Shapely (>=2.0.0)"]
 
 [[package]]
 name = "pydantic"
@@ -1143,4 +1164,4 @@ standard = ["colorama (>=0.4) ; sys_platform == \"win32\"", "httptools (>=0.6.3)
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.11"
-content-hash = "ff9bae87c8d6c263b585f8eb4cba11af0554ae3d7a7dfb6c38814c40012496e9"
+content-hash = "87dcf97bd5c8998c71d61e79b69c177f3a1be71c2c5885af9eeb06d6e70ea0cc"
