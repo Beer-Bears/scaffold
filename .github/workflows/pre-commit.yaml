@@ -25,11 +25,8 @@ jobs:
       - name: Install Poetry
         run: pip install poetry
 
-      - name: Install dependencies
-        run: poetry install --no-root
-
       - name: Install pre-commit
-        run: poetry add --group dev pre-commit
+        run: poetry add --dev pre-commit
 
       - name: Run pre-commit hooks on all files
         run: poetry run pre-commit run --all-files
