@@ -31,11 +31,6 @@ class DbNodes:
 
         for node_id, node in graph.items():
             Model = DbNodes.node_type_to_model(node._type)
-            if not Model:
-                print(
-                    f"⚠️ Пропущен узел {node_id} с неподдерживаемым типом {node._type}"
-                )
-                continue
 
             db_node = Model(
                 name=node.meta.name,
