@@ -3,8 +3,8 @@ import pathlib
 from src.database.connection import init_neo4j
 from src.database.health import check_neo4j
 from src.generator.generator import save_graph_to_db
-from src.parsers.python.core import Parser
 from src.mcp.server import mcp
+from src.parsers.python.core import Parser
 
 if __name__ == "__main__":
     # asyncio.run(test_db())
