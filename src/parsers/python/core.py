@@ -4,8 +4,8 @@ from pathlib import Path
 from pprint import pprint
 from typing import Dict, List
 
-from src.generator.models import Node, Relationship, MetaInfo
-from src.generator.types import NodeType, RelationshipType
+from src.generator.graph_types import NodeType
+from src.generator.models import MetaInfo, Node, Relationship
 from src.parsers.python.models import FileGraph
 from src.parsers.python.node_visitor import NodeVisitor
 
@@ -32,7 +32,7 @@ class Parser:
         Parses a single Python file to extract its dependencies using DependencyVisitor.
         Handles potential parsing errors.
         """
-        content = file_path.read_text(encoding='utf-8')
+        content = file_path.read_text(encoding="utf-8")
         tree = ast.parse(content, filename=str(file_path))
         visitor = NodeVisitor(file_path)
         visitor.visit(tree)
@@ -46,7 +46,7 @@ class Parser:
         # file.relations.pop(0)
         return file
 
-    def     parse(self):
+    def parse(self):
         """
         Parses all Python files within the specified project path
         and builds the complete node graph in two passes.
@@ -59,14 +59,14 @@ class Parser:
 
             pprint(file)
 
-            with open(file_path, 'r', encoding='utf-8') as f:
+            with open(file_path, "r", encoding="utf-8") as f:
                 line_count = len(f.readlines())
             meta = MetaInfo(
                 name=f.name,
                 path=file_path,
                 start_line=1,
                 end_line=line_count,
-                docstring='', # todo
+                docstring="",  # todo
             )
             file_node = Node(_type=NodeType.FILE, meta=meta, relationships=[])
             file_node_id = len(self.nodes) + 1
@@ -81,7 +81,7 @@ class Parser:
                     path=file_path,
                     start_line=elem.line_number,
                     end_line=elem.end_line,
-                    docstring=elem.docstring
+                    docstring=elem.docstring,
                 )
                 node = Node(_type=elem.type, meta=meta, relationships=[])
                 node_id = len(self.nodes) + 1
@@ -96,7 +96,7 @@ class Parser:
                         Relationship(
                             relation_type=relation.relation_type,
                             parent=element_id_to_node_id[elem_id],
-                            node=element_id_to_node_id[relation.node]
+                            node=element_id_to_node_id[relation.node],
                         )
                     )
 
@@ -105,28 +105,32 @@ class Parser:
         Prints a human-readable representation of the generated node graph,
         including docstrings.
         """
-        # pprint(self.node_id_map)
-        # return
-        temp_id_to_string_map = {v: k for k, v in self.node_id_map.items()}
+        for node_unique_id, node in sorted(
+            self.nodes.items(), key=lambda item: item[0]
+        ):  # Sort by unique ID
 
-        for node_unique_id, node in sorted(self.nodes.items(), key=lambda item: item[0]):  # Sort by unique ID
-            string_identifier = temp_id_to_string_map.get(node_unique_id, f"Unknown_ID_{node_unique_id}")
-            print(f"\n--- Node: {node.meta.name} (ID: {node_unique_id}) ({node._type.value}) ---")
-            print(f"  Path: {node.meta.path}, Lines: {node.meta.start_line}-{node.meta.end_line}")
+            print(
+                f"\n--- Node: {node.meta.name} (ID: {node_unique_id}) ({node._type.value}) ---"
+            )
+            print(
+                f"  Path: {node.meta.path}, Lines: {node.meta.start_line}-{node.meta.end_line}"
+            )
             if node.meta.docstring:
                 display_docstring = node.meta.docstring.strip()
                 if len(display_docstring) > 100:
                     display_docstring = display_docstring[:97] + "..."
-                print(f"  Docstring: \"{display_docstring}\"")
+                print(f'  Docstring: "{display_docstring}"')
             else:
-                print(f"  Docstring: N/A")
+                print("  Docstring: N/A")
 
             if node.relationships:
                 print("  Relationships:")
-                for rel in sorted(node.relationships, key=lambda r: (r.relation_type.value, r.node)):
-                    # target_string_id = temp_id_to_string_map.get(self.nodes[rel.node], f"Unknown_ID_{id(rel.node)}")
+                for rel in sorted(
+                    node.relationships, key=lambda r: (r.relation_type.value, r.node)
+                ):
                     print(
-                        f"    - {rel.relation_type.value:<8} {rel.parent} -> (ID: {rel.node}) ({self.nodes[rel.node]._type.value})")
+                        f"    - {rel.relation_type.value:<8} {rel.parent} -> (ID: {rel.node}) ({self.nodes[rel.node]._type.value})"
+                    )
 
 
 if __name__ == "__main__":
@@ -140,4 +144,3 @@ if __name__ == "__main__":
         print("\n--- PARSE ERRORS ---")
         for error in parser.parse_errors:
             print(error)
-

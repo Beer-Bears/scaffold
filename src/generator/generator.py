@@ -78,20 +78,22 @@ class DbRelations:
         pprint(id_to_db_node)
         for node_id, db_node in id_to_db_node.items():
             print(node_id, db_node)
-            db_node_relationship = DbRelations.relations_of_db_node(id_to_db_node, graph[node_id].relationships)
+            db_node_relationship = DbRelations.relations_of_db_node(
+                id_to_db_node, graph[node_id].relationships
+            )
             pprint(db_node_relationship)
             DbRelations.make_db_relations_for_node(db_node, db_node_relationship)
 
     @staticmethod
-    def relations_of_db_node(db_nodes: dict[int, StructuredNode], graph_relationships: list[Relationship]) -> list[
-        tuple[RelationshipType, StructuredNode]]:
-        return [
-            (rel.relation_type, db_nodes[rel.node])
-            for rel in graph_relationships
-        ]
+    def relations_of_db_node(
+        db_nodes: dict[int, StructuredNode], graph_relationships: list[Relationship]
+    ) -> list[tuple[RelationshipType, StructuredNode]]:
+        return [(rel.relation_type, db_nodes[rel.node]) for rel in graph_relationships]
 
     @staticmethod
-    def make_db_relation_for_node(parent: StructuredNode, child: StructuredNode, rel: RelationshipType):
+    def make_db_relation_for_node(
+        parent: StructuredNode, child: StructuredNode, rel: RelationshipType
+    ):
         print(parent, child, rel)
         match parent, child, rel:
             # DEFINE
