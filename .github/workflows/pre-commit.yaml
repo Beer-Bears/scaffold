@@ -1,0 +1,32 @@
+name: Run pre-commit checks
+
+permissions:
+  contents: read
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install Poetry
+        run: pip install poetry
+
+      - name: Install pre-commit
+        run: poetry install --only dev
+
+      - name: Run pre-commit hooks on all files
+        run: poetry run pre-commit run --all-files

@@ -1,11 +1,10 @@
-from neomodel import (
-    StructuredNode,
-    StringProperty,
-    RelationshipTo as rTO,
-    RelationshipFrom as rFrom
-)
+from neomodel import RelationshipFrom as rFrom
+from neomodel import RelationshipTo as rTO
+from neomodel import StringProperty, StructuredNode
+
 from src.database.models.mixins import ObjectMetaMixin
-from src.generator.types import NodeType as NT, RelationshipType as RT
+from src.generator.graph_types import NodeType as NT
+from src.generator.graph_types import RelationshipType as RT
 
 
 class MethodNode(StructuredNode, ObjectMetaMixin):
