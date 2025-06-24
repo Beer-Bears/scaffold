@@ -1,3 +1,4 @@
+from pprint import pprint
 from typing import Type
 
 from neomodel import StructuredNode
@@ -74,11 +75,13 @@ class DbRelations:
          1. Вытаскивает связи из графа в виде (RelationshipType -> StructuredNode)
          2. Записывает связи в БД
         """
+        pprint(id_to_db_node)
         for node_id, db_node in id_to_db_node.items():
+            print(node_id, db_node)
             db_node_relationship = DbRelations.relations_of_db_node(
                 id_to_db_node, graph[node_id].relationships
             )
-
+            pprint(db_node_relationship)
             DbRelations.make_db_relations_for_node(db_node, db_node_relationship)
 
     @staticmethod
@@ -91,14 +94,16 @@ class DbRelations:
     def make_db_relation_for_node(
         parent: StructuredNode, child: StructuredNode, rel: RelationshipType
     ):
+        print(parent, child, rel)
         match parent, child, rel:
             # DEFINE
             case FileNode(), ClassNode(), RelationshipType.DEFINE:
                 parent.defines_classes.connect(child)
             case FileNode(), MethodNode(), RelationshipType.DEFINE:
                 parent.defines_methods.connect(child)
-
             case ClassNode(), MethodNode(), RelationshipType.DEFINE:
+                parent.defines_methods.connect(child)
+            case MethodNode(), MethodNode(), RelationshipType.DEFINE:
                 parent.defines_methods.connect(child)
 
             # USE
@@ -119,7 +124,7 @@ class DbRelations:
 
             case _:
                 raise ValueError(
-                    f"Unsupported combination: {type(parent).__name__} -> {type(child).__name__} with relation {rel}"
+                    f"Unsupported combination: {parent} -> {child} with relation {rel}"
                 )
 
     @staticmethod
