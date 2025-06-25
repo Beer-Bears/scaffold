@@ -21,6 +21,7 @@ services:
       - ALLOW_RESET=TRUE
     volumes:
       - chroma_data:/data
+
   neo4j:
     image: neo4j:5
     container_name: scaffold-neo4j
