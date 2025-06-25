@@ -1,6 +1,5 @@
 from neomodel import db
 
-
 from src.database.connection import init_neo4j
 from src.database.models.nodes import ClassNode, FileNode, FunctionNode
 
