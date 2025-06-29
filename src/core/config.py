@@ -1,26 +1,26 @@
+__all__ = ["get_settings", "MainSettings", "EnvBasedSettings"]
 from functools import lru_cache
 
 from pydantic_settings import BaseSettings
 
+from src.core.vector.config import VectorSettings
+from src.database.config import DatabaseSettings
 
-class Settings(BaseSettings):
-    # Project settings
+
+class EnvBasedSettings(BaseSettings):
+    class Config:
+        env_file = ".env"
+        env_file_encoding = "utf-8"
+        extra = "ignore"
+
+
+class MainSettings(EnvBasedSettings, DatabaseSettings, VectorSettings):
     project_name: str = "Scaffold"
     project_description: str = "Specialized RAG system for large codebases"
     version: str = "0.1.0"
     environment: str = "development"
 
-    # Database settings
-    postgres_enabled: bool = True
-    neo4j_enabled: bool = True
-
-    # LLM settings
-    llm_model: str = "scaffold-llm-v1"
-
-    class Config:
-        env_file = ".env"
-
 
 @lru_cache()
-def get_settings() -> Settings:
-    return Settings()
+def get_settings() -> MainSettings:
+    return MainSettings()
