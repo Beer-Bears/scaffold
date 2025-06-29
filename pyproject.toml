@@ -17,6 +17,7 @@ langchain-community = "^0.3.26"
 sentence-transformers = "^4.1.0"
 langchain-huggingface = "^0.3.0"
 faiss-cpu = "^1.11.0"
+langchain-chroma = "^0.2.4"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.4.1"
