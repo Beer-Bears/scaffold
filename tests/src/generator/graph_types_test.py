@@ -4,7 +4,7 @@ from src.generator.graph_types import NodeType, RelationshipType
 def test_node_type():
     assert hasattr(NodeType, "FILE")
     assert hasattr(NodeType, "CLASS")
-    assert hasattr(NodeType, "METHOD")
+    assert hasattr(NodeType, "FUNCTION")
 
 
 def test_relationship_type():

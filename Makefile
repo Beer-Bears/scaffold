@@ -3,3 +3,9 @@ pull-testgroup:
 
 test:
 	poetry run pytest
+
+up:
+	docker-compose up --build
+
+down:
+	docker-compose down
