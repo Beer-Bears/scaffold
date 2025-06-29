@@ -40,26 +40,30 @@ class NodeVisitor(ast.NodeVisitor):
         self.file = FileGraph(path)
         self.scope_stack: list[str] = []
 
-    def _get_type(self, node: ast.AST) -> str:
+    type SupportedNode = ast.ClassDef | ast.FunctionDef | ast.Call | ast.AsyncFunctionDef
+
+    def _get_type(self, node: SupportedNode) -> NodeType:
         match node:
             case ast.ClassDef():
                 return NodeType.CLASS
-            case ast.FunctionDef() | ast.Call():
-                return NodeType.METHOD
+            case ast.FunctionDef() | ast.Call() | ast.AsyncFunctionDef():
+                return NodeType.FUNCTION
             case _:
                 raise Exception(f"Unexpected node: {node}")
-
-    type SupportedNode = ast.ClassDef | ast.FunctionDef | ast.Call
 
     def _get_name(self, node: SupportedNode) -> str:
         name = None
         match node:
-            case ast.ClassDef(name=n) | ast.FunctionDef(name=n):
+            case (
+                ast.ClassDef(name=n)
+                | ast.FunctionDef(name=n)
+                | ast.AsyncFunctionDef(name=n)
+            ):
                 name = n
             case ast.Call(func=f):
                 f: ast.expr = f
                 name = getattr(f, "id", None) or getattr(f, "attr", None)
-        assert name is not None, "Name not found!"
+        assert name is not None, f"Name of '{node}' is not found!"
         return name
 
     def _create_code_element(self, node: SupportedNode) -> CodeElement:
@@ -107,6 +111,18 @@ class NodeVisitor(ast.NodeVisitor):
             self.scope_stack,
             self._create_code_element(node),
             relation_type=RelationshipType.USE,
+        )
+
+        self.generic_visit(node)
+        self.scope_stack.pop()
+
+    def visit_AsyncFunctionDef(self, node: ast.AsyncFunctionDef):
+        self.scope_stack.append(node.name)
+
+        self.file.add_element(
+            self.scope_stack,
+            self._create_code_element(node),
+            relation_type=RelationshipType.DEFINE,
         )
 
         self.generic_visit(node)

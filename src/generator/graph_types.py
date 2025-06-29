@@ -4,7 +4,7 @@ from enum import Enum
 class NodeType(str, Enum):
     FILE = "FileNode"
     CLASS = "ClassNode"
-    METHOD = "MethodNode"  # todo rename to `function`
+    FUNCTION = "FunctionNode"
 
 
 class RelationshipType(str, Enum):
