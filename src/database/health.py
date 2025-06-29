@@ -1,7 +1,8 @@
 from neomodel import db
 
+
 from src.database.connection import init_neo4j
-from src.database.models.nodes import ClassNode, FileNode, MethodNode
+from src.database.models.nodes import ClassNode, FileNode, FunctionNode
 
 
 
@@ -45,7 +46,7 @@ async def check():
     ).save()
 
     # Методы
-    process_payment = MethodNode(
+    process_payment = FunctionNode(
         name="process_payment",
         path="services/payment_service.py",
         start_line=10,
@@ -53,7 +54,7 @@ async def check():
         docstring="Обрабатывает платёж клиента",
     ).save()
 
-    validate_card = MethodNode(
+    validate_card = FunctionNode(
         name="validate_card",
         path="services/payment_service.py",
         start_line=32,
@@ -61,7 +62,7 @@ async def check():
         docstring="Проверяет валидность карты",
     ).save()
 
-    generate_invoice = MethodNode(
+    generate_invoice = FunctionNode(
         name="generate_invoice",
         path="services/payment_service.py",
         start_line=93,

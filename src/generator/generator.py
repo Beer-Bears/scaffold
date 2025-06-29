@@ -3,7 +3,7 @@ from typing import Type
 
 from neomodel import StructuredNode
 
-from src.database.models.nodes import ClassNode, FileNode, MethodNode
+from src.database.models.nodes import ClassNode, FileNode, FunctionNode
 from src.generator.graph_types import NodeType, RelationshipType
 from src.generator.models import Node, Relationship
 
@@ -53,7 +53,7 @@ class DbNodes:
         models = {
             NodeType.FILE: FileNode,
             NodeType.CLASS: ClassNode,
-            NodeType.METHOD: MethodNode,
+            NodeType.FUNCTION: FunctionNode,
         }
 
         model = models.get(_type)
@@ -99,32 +99,36 @@ class DbRelations:
             # DEFINE
             case FileNode(), ClassNode(), RelationshipType.DEFINE:
                 parent.defines_classes.connect(child)
-            case FileNode(), MethodNode(), RelationshipType.DEFINE:
+            case FileNode(), FunctionNode(), RelationshipType.DEFINE:
                 parent.defines_methods.connect(child)
-            case ClassNode(), MethodNode(), RelationshipType.DEFINE:
+            case ClassNode(), FunctionNode(), RelationshipType.DEFINE:
                 parent.defines_methods.connect(child)
-            case MethodNode(), MethodNode(), RelationshipType.DEFINE:
+            case ClassNode(), ClassNode(), RelationshipType.DEFINE:
+                parent.defines_classes.connect(child)
+            case FunctionNode(), FunctionNode(), RelationshipType.DEFINE:
                 parent.defines_methods.connect(child)
 
             # USE
             case FileNode(), ClassNode(), RelationshipType.USE:
                 parent.uses_classes.connect(child)
-            case FileNode(), MethodNode(), RelationshipType.USE:
+            case FileNode(), FunctionNode(), RelationshipType.USE:
                 parent.uses_methods.connect(child)
 
             case ClassNode(), ClassNode(), RelationshipType.USE:
                 parent.uses_classes.connect(child)
-            case ClassNode(), MethodNode(), RelationshipType.USE:
+            case ClassNode(), FunctionNode(), RelationshipType.USE:
                 parent.uses_methods.connect(child)
 
-            case MethodNode(), ClassNode(), RelationshipType.USE:
+            case FunctionNode(), ClassNode(), RelationshipType.USE:
                 parent.uses_classes.connect(child)
-            case MethodNode(), MethodNode(), RelationshipType.USE:
+            case FunctionNode(), FunctionNode(), RelationshipType.USE:
                 parent.uses_methods.connect(child)
 
             case _:
                 raise ValueError(
-                    f"Unsupported combination: {parent} -> {child} with relation {rel}"
+                    f"Unsupported combination:\n"
+                    f"{type(parent)} -{rel}-> {type(child)}\n"
+                    f"{parent} -> {child} with relation {rel}"
                 )
 
     @staticmethod
