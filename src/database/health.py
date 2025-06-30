@@ -4,7 +4,6 @@ from src.database.connection import init_neo4j
 from src.database.models.nodes import ClassNode, FileNode, FunctionNode
 
 
-
 def check_neo4j():
     try:
         results, _ = db.cypher_query("RETURN 1")

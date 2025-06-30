@@ -5,7 +5,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 
 from src.core.config import get_settings
 
-settings = get_settings()
+settings = get_settings().vector
 
 
 def get_splitter(
