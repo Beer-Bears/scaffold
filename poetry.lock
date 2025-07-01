@@ -1112,24 +1112,6 @@ docs = ["sphinx (>=5.3)", "sphinx-rtd-theme (>=1.0)"]
 testing = ["coverage (>=6.2)", "hypothesis (>=5.7.1)"]
 
 [[package]]
-name = "pytest-env"
-version = "1.1.5"
-description = "pytest plugin that allows you to add environment variables."
-optional = false
-python-versions = ">=3.8"
-groups = ["dev"]
-files = [
-    {file = "pytest_env-1.1.5-py3-none-any.whl", hash = "sha256:ce90cf8772878515c24b31cd97c7fa1f4481cd68d588419fd45f10ecaee6bc30"},
-    {file = "pytest_env-1.1.5.tar.gz", hash = "sha256:91209840aa0e43385073ac464a554ad2947cc2fd663a9debf88d03b01e0cc1cf"},
-]
-
-[package.dependencies]
-pytest = ">=8.3.3"
-
-[package.extras]
-testing = ["covdefaults (>=2.3)", "coverage (>=7.6.1)", "pytest-mock (>=3.14)"]
-
-[[package]]
 name = "python-dotenv"
 version = "1.1.1"
 description = "Read key-value pairs from a .env file and set them as environment variables"
@@ -1709,4 +1691,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.11"
-content-hash = "0ab27fbbee7c77e3c42388e83d3ba8fd97bd408b7468b6e5b2aed69bf7f6e6c9"
+content-hash = "fa908b4e377c7096f69cb688a170a05d3a53e786d1517431a7b6021d72f5d24e"

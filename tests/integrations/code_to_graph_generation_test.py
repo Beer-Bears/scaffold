@@ -1,7 +1,7 @@
 import pathlib
 
 import pytest
-from neomodel import db, clear_neo4j_database, config
+from neomodel import clear_neo4j_database, config, db
 from testcontainers.neo4j import Neo4jContainer
 
 from src.generator.generator import save_graph_to_db
@@ -12,7 +12,10 @@ PROJECTS = ["syntatic-1", "realworld-1"]
 
 @pytest.fixture(scope="module", autouse=True)
 def setup_test_db(neo4j_container: Neo4jContainer):
-    host, port = neo4j_container.get_container_host_ip(), neo4j_container.get_exposed_port(7687)
+    host, port = (
+        neo4j_container.get_container_host_ip(),
+        neo4j_container.get_exposed_port(7687),
+    )
     config.DATABASE_URL = f"bolt://neo4j:password@{host}:{port}"
     yield
 
@@ -46,7 +49,6 @@ def test_project_parsing_and_saving(project: str, setup_test_db):
     file_count = file_count[0][0]
     class_count = class_count[0][0]
     function_count = function_count[0][0]
-
 
     if project == "syntatic-1":
         assert file_count == 7
