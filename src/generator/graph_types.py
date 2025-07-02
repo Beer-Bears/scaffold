@@ -2,6 +2,7 @@ from enum import Enum
 
 
 class NodeType(str, Enum):
+    FOLDER = "FolderNode"
     FILE = "FileNode"
     CLASS = "ClassNode"
     FUNCTION = "FunctionNode"

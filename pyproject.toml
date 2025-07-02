@@ -10,7 +10,7 @@ package-mode = false
 python = "^3.11"
 neo4j = "^5.28.1"
 pydantic-settings = "^2.10.0"
-fastmcp = "^2.0.0"
+fastmcp = "^2.10.1"
 neomodel = "^5.5.0"
 langchain = "^0.3.26"
 langchain-community = "^0.3.26"
@@ -25,6 +25,7 @@ posthog = "<6.0.0"
 pytest = "^8.4.1"
 pytest-asyncio = "^0.23.8"
 pre-commit = "^4.2.0"
+testcontainers = "^4.9.0"
 
 [tool.black]
 line-length = 88

@@ -24,7 +24,6 @@ class MetaInfo:
 
 @dataclass
 class Node:
-
     _type: NodeType
     meta: MetaInfo
     relationships: list[Relationship]
