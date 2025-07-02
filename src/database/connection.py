@@ -1,28 +1,39 @@
-from contextlib import asynccontextmanager
-
+__all__ = ["init_chromadb", "init_neo4j"]
+import chromadb
+from chromadb.config import Settings as ChromaSettings
+from langchain_chroma import Chroma
 from neomodel import config  # type: ignore[import-untyped]
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
-from src.database.config import settings
+from src.core.config import get_settings
 
-# --- PostgreSQL ---
-engine = create_async_engine(settings.database_url, echo=False)
-AsyncSessionLocal = async_sessionmaker(
-    engine, expire_on_commit=False, class_=AsyncSession
-)
+settings = get_settings()
+
+# --- ChromaDB ---
+# https://python.langchain.com/docs/integrations/vectorstores/chroma/
 
 
-@asynccontextmanager
-async def get_pg_session():
-    """
-    How use:
-    .. code-block:: python
+def init_chromadb() -> tuple[chromadb.ClientAPI, Chroma]:
+    print("establishing connection with chromadb")
+    chroma_settings = ChromaSettings(
+        chroma_server_host=settings.database.chromadb_host,
+        chroma_server_http_port=settings.database.chromadb_port,
+    )
+    client = chromadb.HttpClient(
+        host=settings.database.chromadb_host,
+        port=settings.database.chromadb_port,
+        settings=chroma_settings,
+    )
+    client.heartbeat()
+    print("client established")
+    collection = client.get_or_create_collection(settings.database.chromadb_collection)
 
-        async with get_pg_session() as session:
-            result = await session...
-    """
-    async with AsyncSessionLocal() as session:
-        yield session
+    vector_store = Chroma(
+        client=client,
+        collection_name=collection.name,
+        embedding_function=settings.vector.embedings_function,
+    )
+
+    return (client, vector_store)
 
 
 # --- Neo4j ---
@@ -30,4 +41,4 @@ def init_neo4j():
     """
     call in main
     """
-    config.DATABASE_URL = settings.neo4j_uri
+    config.DATABASE_URL = settings.database.neo4j_uri
