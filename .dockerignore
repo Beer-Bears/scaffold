@@ -1,5 +1,6 @@
-.gihtub/
-docs/
-README.md
-LICENSE.md
-.venv
+*
+!src/
+!.env
+!poetry.lock
+!pyproject.toml
+!Makefile
