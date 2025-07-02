@@ -74,7 +74,7 @@ class DatabaseSettings(BaseSettings):
         "default_collection"
     )
 
-    chromadb_host: str = "chromadb"
+    chromadb_host: Annotated[str, Field(env="CHROMA_SERVER_HOST")] = "chromadb"
     chromadb_port: Annotated[int, Field(env="CHROMA_SERVER_PORT")] = 8000
 
 
