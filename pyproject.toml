@@ -12,7 +12,7 @@ sqlalchemy = "^2.0.41"
 neo4j = "^5.28.1"
 pydantic-settings = "^2.10.0"
 asyncpg = "^0.30.0"
-fastmcp = "^2.0.0"
+fastmcp = "^2.10.1"
 neomodel = "^5.5.0"
 
 [tool.poetry.group.dev.dependencies]
