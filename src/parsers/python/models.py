@@ -69,7 +69,7 @@ class FileGraph:
         scope_id = self.get_scope_id(scope_list)
         self.nodes[scope_id] = elem
         parent_id = self.get_parent_id(scope_list)
-        print(scope_id, scope_list, parent_id)
+        # print(scope_id, scope_list, parent_id)
         self.relations[parent_id].append(
             Relationship(relation_type=relation_type, parent=parent_id, node=scope_id)
         )
