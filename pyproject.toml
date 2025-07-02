@@ -19,6 +19,7 @@ langchain-huggingface = "^0.3.0"
 faiss-cpu = "^1.11.0"
 langchain-chroma = "^0.2.4"
 chromadb = "^1.0.13"
+posthog = "<6.0.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.4.1"

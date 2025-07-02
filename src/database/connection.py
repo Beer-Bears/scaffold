@@ -1,5 +1,6 @@
 __all__ = ["init_chromadb", "init_neo4j"]
 import chromadb
+from chromadb.config import Settings as ChromaSettings
 from langchain_chroma import Chroma
 from neomodel import config  # type: ignore[import-untyped]
 
@@ -12,7 +13,18 @@ settings = get_settings()
 
 
 def init_chromadb() -> tuple[chromadb.ClientAPI, Chroma]:
-    client = chromadb.Client()  # TODO: change to persistent client
+    print("establishing connection with chromadb")
+    chroma_settings = ChromaSettings(
+        chroma_server_host=settings.database.chromadb_host,
+        chroma_server_http_port=settings.database.chromadb_port,
+    )
+    client = chromadb.HttpClient(
+        host=settings.database.chromadb_host,
+        port=settings.database.chromadb_port,
+        settings=chroma_settings,
+    )
+    client.heartbeat()
+    print("client established")
     collection = client.get_or_create_collection(settings.database.chromadb_collection)
 
     vector_store = Chroma(

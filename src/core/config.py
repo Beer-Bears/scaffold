@@ -74,11 +74,14 @@ class DatabaseSettings(BaseSettings):
         "default_collection"
     )
 
+    chromadb_host: str = "chromadb"
+    chromadb_port: Annotated[int, Field(env="CHROMA_SERVER_PORT")] = 8000
+
 
 class MCPServerSettings(BaseSettings):
     transport: Literal["stdio", "http", "sse", "streamable-http"] = "http"
     host: str = "0.0.0.0"
-    port: int = 8000
+    port: int = 8080
 
 
 class AppSettings(BaseModel):
