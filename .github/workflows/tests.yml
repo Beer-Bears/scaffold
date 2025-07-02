@@ -29,5 +29,8 @@ jobs:
       - name: Install dependencies
         run: poetry install
 
+      - name: Clone testgroup
+        run: make pull-testgroup
+
       - name: Run tests
         run: make test

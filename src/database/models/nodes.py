@@ -49,3 +49,11 @@ class FileNode(StructuredNode, ObjectMetaMixin):
     # USE
     uses_classes = rTO(NT.CLASS, RT.USE)
     uses_methods = rTO(NT.FUNCTION, RT.USE)
+
+
+class FolderNode(StructuredNode, ObjectMetaMixin):
+    path = StringProperty(unique_index=True, required=True)
+
+    # DEFINE
+    defines_folders = rTO(NT.FOLDER, RT.DEFINE)
+    defines_files = rTO(NT.FILE, RT.DEFINE)
