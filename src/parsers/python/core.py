@@ -1,11 +1,11 @@
 import ast
 import pathlib
 from pathlib import Path
-from pprint import pprint
 from typing import Dict, List
 
 from src.generator.graph_types import NodeType
 from src.generator.models import MetaInfo, Node, Relationship
+from src.parsers.python.import_node_visitor import ImportNodeVisitor
 from src.parsers.python.models import FileGraph
 from src.parsers.python.node_visitor import NodeVisitor
 
@@ -37,12 +37,17 @@ class Parser:
         visitor = NodeVisitor(file_path)
         visitor.visit(tree)
         file = visitor.file
+        print("-" * 100)
+        print(f"[Parse Imports] {file_path}")
+        print()
+        ImportNodeVisitor(file).visit(tree)
+
         # file docstring
         tree = ast.parse(content, filename=str(file_path))
         module_docstring = ast.get_docstring(tree)
         file.docstring = module_docstring
-        pprint(file.nodes)
-        pprint(file.relations)
+        # pprint(file.nodes)
+        # pprint(file.relations)
         # file.relations.pop(0)
         return file
 
@@ -57,7 +62,7 @@ class Parser:
             if not file:
                 continue
 
-            pprint(file)
+            # pprint(file)
 
             with open(file_path, "r", encoding="utf-8") as f:
                 line_count = len(f.readlines())
@@ -138,7 +143,7 @@ if __name__ == "__main__":
     parser.parse()
 
     print("\n✅ Parsing complete. Node graph generated.")
-    parser.print_node_graph()
+    # parser.print_node_graph()
 
     if parser.parse_errors:
         print("\n--- PARSE ERRORS ---")
