@@ -134,7 +134,7 @@ class DbRelations:
         """
         # p# print(id_to_db_node)
         for node_id, db_node in id_to_db_node.items():
-            # # print(node_id, db_node)
+            print("generator.136: ", node_id, db_node)
             db_node_relationship = DbRelations.relations_of_db_node(
                 id_to_db_node, graph[node_id].relationships
             )
@@ -145,6 +145,7 @@ class DbRelations:
     def relations_of_db_node(
         db_nodes: dict[int, StructuredNode], graph_relationships: list[Relationship]
     ) -> list[tuple[RelationshipType, StructuredNode]]:
+        print("generator 148: ", graph_relationships)
         return [(rel.relation_type, db_nodes[rel.node]) for rel in graph_relationships]
 
     @staticmethod
@@ -166,10 +167,14 @@ class DbRelations:
                 parent.defines_methods.connect(child)
             case ClassNode(), ClassNode(), RelationshipType.DEFINE:
                 parent.defines_classes.connect(child)
+            case FunctionNode(), ClassNode(), RelationshipType.DEFINE:
+                parent.defines_classes.connect(child)
             case FunctionNode(), FunctionNode(), RelationshipType.DEFINE:
                 parent.defines_methods.connect(child)
 
             # USE
+            case FileNode(), FileNode(), RelationshipType.USE:
+                parent.uses_files.connect(child)
             case FileNode(), ClassNode(), RelationshipType.USE:
                 parent.uses_classes.connect(child)
             case FileNode(), FunctionNode(), RelationshipType.USE:

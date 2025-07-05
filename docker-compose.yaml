@@ -36,7 +36,7 @@ services:
     restart: unless-stopped
     environment:
       - NEO4J_server_config_strict__validation_enabled=false
-      - NEO4J_AUTH=${NEO4J_AUTH}
+      - NEO4J_AUTH=none
       - NEO4J_USER=${NEO4J_USER}
       - NEO4J_PASSWORD=${NEO4J_PASSWORD}
     ports:

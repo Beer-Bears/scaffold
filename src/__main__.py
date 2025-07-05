@@ -9,11 +9,16 @@ from src.parsers.python.core import Parser
 if __name__ == "__main__":
     # asyncio.run(test_db())
 
-    init_neo4j()
-    check_neo4j()
-    parser = Parser(pathlib.Path("./codebase"))
+    local_test = False
+
+    if not local_test:
+        init_neo4j()
+        check_neo4j()
+
+    parser = Parser(pathlib.Path("./src"))
     parser.parse()
+    # parser.print_node_graph()
 
-    save_graph_to_db(parser.nodes)
-
-    mcp.run(transport="streamable-http", host="0.0.0.0", port=8000)
+    if not local_test:
+        save_graph_to_db(parser.nodes)
+        mcp.run(transport="streamable-http", host="0.0.0.0", port=8000)

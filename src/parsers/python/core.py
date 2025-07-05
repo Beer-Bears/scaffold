@@ -40,7 +40,6 @@ class Parser:
         print("-" * 100)
         print(f"[Parse Imports] {file_path}")
         print()
-        ImportNodeVisitor(file).visit(tree)
 
         # file docstring
         tree = ast.parse(content, filename=str(file_path))
@@ -68,7 +67,7 @@ class Parser:
                 line_count = len(f.readlines())
             meta = MetaInfo(
                 name=f.name,
-                path=file_path,
+                path=str(file_path),
                 start_line=1,
                 end_line=line_count,
                 docstring="",  # todo
@@ -76,14 +75,14 @@ class Parser:
             file_node = Node(_type=NodeType.FILE, meta=meta, relationships=[])
             file_node_id = len(self.nodes) + 1
             self.nodes[file_node_id] = file_node
-            self.node_id_map[file_path] = file_node_id
+            self.node_id_map[str(file_path)] = file_node_id
 
             element_id_to_node_id = {0: file_node_id}
             node_id_to_element_id = {file_node_id: 0}
             for elem_id, elem in file.nodes.items():
                 meta = MetaInfo(
                     name=elem.name,
-                    path=file_path,
+                    path=str(file_path),
                     start_line=elem.line_number,
                     end_line=elem.end_line,
                     docstring=elem.docstring,
@@ -104,6 +103,13 @@ class Parser:
                             node=element_id_to_node_id[relation.node],
                         )
                     )
+
+        for file_path in file_paths:
+            content = file_path.read_text(encoding="utf-8")
+            tree = ast.parse(content, filename=str(file_path))
+            visitor = ImportNodeVisitor(str(file_path), self.nodes)
+            visitor.visit(tree)
+            self.nodes = visitor.nodes
 
     def print_node_graph(self):
         """

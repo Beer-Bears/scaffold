@@ -1,5 +1,3 @@
-from typing import Dict, Optional
-
 from fastmcp import FastMCP
 
 mcp = FastMCP(
@@ -12,19 +10,13 @@ mcp = FastMCP(
 
 
 @mcp.tool
-def mock_llm(
-    prompt: str, context: Optional[Dict] = None, options: Optional[Dict] = None
-) -> dict:
+def mock_llm(node_name: str) -> dict:
     """
     Mock LLM endpoint that simulates AI model responses.
     """
     return {
-        "response": f"Mock response to: {prompt}",
-        "tokens_used": len(prompt.split()),
-        "model": "mock-llm-v1",
-        "meta": {
-            "version": "0.1.0",
-            "source": "mock-llm-endpoint",
-            "processing_time_ms": 100,
-        },
+        "response": f"Node `{node_name}`",
+        "path": "some/path.py",
+        "used_in": "some/another.py",
+        "docstring": f"{node_name} make API requests and write to DB",
     }
