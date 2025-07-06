@@ -31,19 +31,46 @@ class ImportNodeVisitor(ast.NodeVisitor):
         ast.Import:
             - names: [import src.database, fastapi]
         """
-        # case 1 todo
-        # case 2 todo
+        # case 1: not possible - https://docs.python.org/3/reference/import.html#:~:text=but%20relative%20imports
+        # case 2: ignore
         # case 3:
-        _, importing_file_id, _ = self.match_file_by_path(self.path)
-        for imported_str in [alias.name for alias in node.names]:
-            print(imported_str)
-            if imported_str[0] == ".":  # ignore case 1
-                continue
-            path = imported_str.replace(".", "/") + ".py"
-            matched, file_id, file = self.match_file_by_path(path)
+        imported_modules_str = [n.name for n in node.names]
+        # current file - always should exist
+        exist, importing_file_id, _ = self.match_file_by_path(self.path)
+        assert exist is True and importing_file_id is not None
+
+        for imported_module_str in imported_modules_str:
+
+            print(imported_module_str)
+
+            imported_file_path, imported_module_path = self.module_to_py_path(
+                imported_module_str
+            )
+
+            # find either single file or module
+            matched, imported_file_id, imported_file = self.match_file_by_path(
+                imported_file_path
+            )
+            if not matched:
+                matched, imported_file_id, imported_file = self.match_file_by_path(
+                    imported_module_path
+                )
+
             if matched:  # case 3
-                print(__name__, 46, imported_str, matched, file_id, file)
-                self.add_import_relation(importing=importing_file_id, imported=file_id)
+
+                print(
+                    __name__,
+                    46,
+                    imported_module_str,
+                    matched,
+                    imported_file_id,
+                    imported_file,
+                )
+
+                self.add_import_relation(
+                    importing=importing_file_id, imported=imported_file_id
+                )
+
         print(f"Import Node:\n\t{[alias.__dict__ for alias in node.__dict__['names']]}")
 
     def visit_ImportFrom(self, node: ast.ImportFrom):
@@ -54,6 +81,9 @@ class ImportNodeVisitor(ast.NodeVisitor):
             - names: [from src import some, some2]
               - some, some2
         """
+        module = node.module
+        level = node.level
+        imported_nodes_str = [n.name for n in node.names]
 
         # case 1:
         #  get relative file from current
@@ -61,31 +91,37 @@ class ImportNodeVisitor(ast.NodeVisitor):
         #  recursively try to match import to some path
         # case 2:
         #  if didn't match - ignore
-        module = node.module
-        level = node.level
-        names = [n.name for n in node.names]
+
+        # current file - always should exist
+        exist, importing_file_id, _ = self.match_file_by_path(self.path)
+        assert exist is True and importing_file_id is not None
 
         if level > 0:  # case 1 todo
-            pass
-        else:
-            path = module.replace(".", "/")
-            matched, file_id, file = self.match_file_by_path(path)
-            if matched:  # case 3
-                _, importing_file_id, _ = self.match_file_by_path(self.path)
-                for imported_node_str in names:
-                    imported_node_id = self.find_top_lvl_node_in_file(
-                        file, imported_node_str
-                    )
-                    if imported_node_id is not None:
-                        self.add_import_relation(
-                            importing=importing_file_id, imported=imported_node_id
-                        )
-            else:  # case 2 todo
-                pass
+            return
+
+        file_path, module_path = self.module_to_py_path(module)
+        matched, file_id, file = self.match_file_by_path(file_path)
+        if not matched:
+            matched, file_id, file = self.match_file_by_path(module_path)
+
+        if not matched:  # case 2
+            return
+        # so its matched
+
+        # case 3
+        for imported_node_str in imported_nodes_str:
+
+            imported_node_id = self.find_top_lvl_node_in_file(file, imported_node_str)
+
+            if imported_node_id is not None:
+                self.add_import_relation(
+                    importing=importing_file_id, imported=imported_node_id
+                )
+
         print(
             f"Import From Node:\n\tFrom `{'./' * node.__dict__['level']}{node.__dict__['module']}` Import {[alias.__dict__['name'] for alias in node.__dict__['names']]}"
         )
-        print("\t", module, level, names)
+        print("\t", module, level, imported_nodes_str)
 
     def match_file_by_path(
         self, path: str
@@ -117,3 +153,11 @@ class ImportNodeVisitor(ast.NodeVisitor):
                 return node_id
 
         print(__name__, 114, file.meta.name, imported_node_str, "Not found!")
+
+    def module_to_py_path(self, module: str) -> Tuple[str, str]:
+        """
+        src.database.config -> (src/database/config.py, src/database/config/__init__.py)
+        my_project -> (my_project.py, my_project/__init__.py)
+        """
+        path = module.replace(".", "/")
+        return path + ".py", path + "/__init__.py"
