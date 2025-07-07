@@ -1,6 +1,6 @@
-from typing import Dict, Optional
-
 from fastmcp import FastMCP
+
+from src.generator.generator import get_node_information
 
 mcp = FastMCP(
     name="Scaffold MCP Server",
@@ -12,19 +12,12 @@ mcp = FastMCP(
 
 
 @mcp.tool
-def mock_llm(
-    prompt: str, context: Optional[Dict] = None, options: Optional[Dict] = None
+def node_information(
+    node_name: str,
 ) -> dict:
     """
-    Mock LLM endpoint that simulates AI model responses.
+    Find node with relevant name and return information (code, relationships).
     """
     return {
-        "response": f"Mock response to: {prompt}",
-        "tokens_used": len(prompt.split()),
-        "model": "mock-llm-v1",
-        "meta": {
-            "version": "0.1.0",
-            "source": "mock-llm-endpoint",
-            "processing_time_ms": 100,
-        },
+        "response": get_node_information(node_name),
     }
