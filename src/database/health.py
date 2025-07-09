@@ -1,14 +1,7 @@
 from neomodel import db
-from sqlalchemy import text
 
-from src.database.connection import get_pg_session, init_neo4j
+from src.database.connection import init_neo4j
 from src.database.models.nodes import ClassNode, FileNode, FunctionNode
-
-
-async def check_pg():
-    async with get_pg_session() as session:
-        result = await session.execute(text("SELECT 1"))
-        print(f"Postgres: {result.scalar()}")
 
 
 def check_neo4j():
@@ -23,7 +16,6 @@ def check_neo4j():
 async def check():
     init_neo4j()
     check_neo4j()
-    await check_pg()
 
     # Файл
     file = FileNode(

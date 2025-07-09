@@ -1,28 +1,34 @@
-from contextlib import asynccontextmanager
-
+__all__ = ["init_chromadb", "init_neo4j"]
+import chromadb
+from chromadb.config import Settings as ChromaSettings
+from llama_index.vector_stores.chroma import ChromaVectorStore
 from neomodel import config  # type: ignore[import-untyped]
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
-from src.database.config import settings
+from src.core.config import get_settings
 
-# --- PostgreSQL ---
-engine = create_async_engine(settings.database_url, echo=False)
-AsyncSessionLocal = async_sessionmaker(
-    engine, expire_on_commit=False, class_=AsyncSession
-)
+settings = get_settings()
+
+# --- ChromaDB ---
+# https://docs.llamaindex.ai/en/stable/examples/vector_stores/ChromaIndexDemo/
 
 
-@asynccontextmanager
-async def get_pg_session():
-    """
-    How use:
-    .. code-block:: python
+def init_chromadb() -> ChromaVectorStore:
+    chroma_settings = ChromaSettings(
+        chroma_server_host=settings.database.chromadb_host,
+        chroma_server_http_port=settings.database.chromadb_port,
+    )
+    client = chromadb.HttpClient(
+        host=settings.database.chromadb_host,
+        port=settings.database.chromadb_port,
+        settings=chroma_settings,
+    )
+    client.heartbeat()
 
-        async with get_pg_session() as session:
-            result = await session...
-    """
-    async with AsyncSessionLocal() as session:
-        yield session
+    chroma_collection = client.get_or_create_collection(
+        settings.database.chromadb_collection
+    )
+    vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
+    return vector_store
 
 
 # --- Neo4j ---
@@ -30,4 +36,4 @@ def init_neo4j():
     """
     call in main
     """
-    config.DATABASE_URL = settings.neo4j_uri
+    config.DATABASE_URL = settings.database.neo4j_uri
