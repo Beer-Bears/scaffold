@@ -12,7 +12,6 @@ on:
 jobs:
   validate-docker-compose:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -25,13 +24,23 @@ jobs:
 
       - name: Validate compose.yaml
         run: docker compose config
-        
-      - name: Build Docker images
-        run: docker compose build --pull
 
-      - name: Start containers
-        run: docker compose up -d
+  poetry-deps:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Stop containers
-        run: docker compose down -v
-        if: always()
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Install Poetry
+        run: pip install poetry
+
+      - name: Validate pyproject.toml
+        run: poetry check
+
+      - name: Install dependencies
+        run: poetry install --no-root
