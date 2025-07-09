@@ -1,4 +1,3 @@
-from pprint import pprint
 from typing import Type, Union
 
 from neomodel import RelationshipFrom, RelationshipTo, StructuredNode
