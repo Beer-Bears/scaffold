@@ -29,6 +29,10 @@ else
 	MESSAGE = "Done"
 endif
 
+help: ##@Help Show this help
+	@echo -e "Usage: make [target] ...\n"
+	@perl -e '$(HELP_FUN)' $(MAKEFILE_LIST)
+
 .PHONY: pull-testgroup
 pull-testgroup:
 	git clone https://github.com/Beer-Bears/scaffold-testgroup codebase
@@ -56,10 +60,6 @@ pre-commit-run: ##@Utils Run pre-commit on all files
 .PHONY: pre-commit-clean
 pre-commit-clean: ##@Utils Clean all installed pre-commit
 	poetry run pre-commit clean
-
-help: ##@Help Show this help
-	@echo -e "Usage: make [target] ...\n"
-	@perl -e '$(HELP_FUN)' $(MAKEFILE_LIST)
 
 %::
 	echo $(MESSAGE)
