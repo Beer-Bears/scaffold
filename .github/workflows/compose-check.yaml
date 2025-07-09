@@ -25,12 +25,7 @@ jobs:
 
       - name: Validate compose.yaml
         run: docker compose config
-
-      - name: Free up disk space
-        run: |
-          docker system prune -af
-          sudo apt-get clean
-
+        
       - name: Build Docker images
         run: docker compose build --pull
 
