@@ -15,13 +15,20 @@ PROJECT_PATH = "./codebase/syntatic-1"
 if __name__ == "__main__":
     # asyncio.run(test_db())
 
+    local_test = False
+
+    if not local_test:
+        init_neo4j()
+        check_neo4j()
     # Graph Generation
     init_neo4j()
     check_neo4j()
     parser = Parser(pathlib.Path(PROJECT_PATH))
     parser.parse()
 
-    save_graph_to_db(parser.nodes)
+    if not local_test:
+        save_graph_to_db(parser.nodes)
+        mcp.run(transport="streamable-http", host="0.0.0.0", port=8000)
 
     # Vector RAG
     vectorstore = init_chromadb()

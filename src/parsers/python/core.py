@@ -1,11 +1,11 @@
 import ast
 import pathlib
 from pathlib import Path
-from pprint import pprint
 from typing import Dict, List
 
 from src.generator.graph_types import NodeType
 from src.generator.models import MetaInfo, Node, Relationship
+from src.parsers.python.import_node_visitor import ImportNodeVisitor
 from src.parsers.python.models import FileGraph
 from src.parsers.python.node_visitor import NodeVisitor
 
@@ -37,12 +37,16 @@ class Parser:
         visitor = NodeVisitor(file_path)
         visitor.visit(tree)
         file = visitor.file
+        print("-" * 100)
+        print(f"[Parse Imports] {file_path}")
+        print()
+
         # file docstring
         tree = ast.parse(content, filename=str(file_path))
         module_docstring = ast.get_docstring(tree)
         file.docstring = module_docstring
-        pprint(file.nodes)
-        pprint(file.relations)
+        # pprint(file.nodes)
+        # pprint(file.relations)
         # file.relations.pop(0)
         return file
 
@@ -57,13 +61,13 @@ class Parser:
             if not file:
                 continue
 
-            pprint(file)
+            # pprint(file)
 
             with open(file_path, "r", encoding="utf-8") as f:
                 line_count = len(f.readlines())
             meta = MetaInfo(
                 name=f.name,
-                path=file_path,
+                path=str(file_path),
                 start_line=1,
                 end_line=line_count,
                 docstring="",  # todo
@@ -71,14 +75,14 @@ class Parser:
             file_node = Node(_type=NodeType.FILE, meta=meta, relationships=[])
             file_node_id = len(self.nodes) + 1
             self.nodes[file_node_id] = file_node
-            self.node_id_map[file_path] = file_node_id
+            self.node_id_map[str(file_path)] = file_node_id
 
             element_id_to_node_id = {0: file_node_id}
             node_id_to_element_id = {file_node_id: 0}
             for elem_id, elem in file.nodes.items():
                 meta = MetaInfo(
                     name=elem.name,
-                    path=file_path,
+                    path=str(file_path),
                     start_line=elem.line_number,
                     end_line=elem.end_line,
                     docstring=elem.docstring,
@@ -99,6 +103,13 @@ class Parser:
                             node=element_id_to_node_id[relation.node],
                         )
                     )
+
+        for file_path in file_paths:
+            content = file_path.read_text(encoding="utf-8")
+            tree = ast.parse(content, filename=str(file_path))
+            visitor = ImportNodeVisitor(str(file_path), self.nodes)
+            visitor.visit(tree)
+            self.nodes = visitor.nodes
 
     def print_node_graph(self):
         """
@@ -138,7 +149,7 @@ if __name__ == "__main__":
     parser.parse()
 
     print("\n✅ Parsing complete. Node graph generated.")
-    parser.print_node_graph()
+    # parser.print_node_graph()
 
     if parser.parse_errors:
         print("\n--- PARSE ERRORS ---")
