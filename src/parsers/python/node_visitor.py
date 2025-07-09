@@ -8,31 +8,37 @@ from src.parsers.python.models import CodeElement, FileGraph
 
 def print_dict_recursive(obj, indent=1):
     if not hasattr(obj, "__dict__"):
-        print("  " * indent + repr(obj))
+        # print("  " * indent + repr(obj))
         return
     for key, value in obj.__dict__.items():
-        print("  " * indent + f"{key}: ", end="")
+        # print("  " * indent + f"{key}: ", end="")
         if hasattr(value, "__dict__"):
-            print()
-            print_dict_recursive(value, indent + 1)
+            # print()
+            pass
+            # print_dict_recursive(value, indent + 1)
         elif isinstance(value, dict):
-            print()
-            print_dict_recursive_dict(value, indent + 1)
+            pass
+            # print()
+            # print_dict_recursive_dict(value, indent + 1)
         else:
-            print(repr(value))
+            pass
+            # print(repr(value))
 
 
 def print_dict_recursive_dict(d: dict, indent=0):
     for k, v in d.items():
-        print("  " * indent + f"{k}: ", end="")
+        # print("  " * indent + f"{k}: ", end="")
         if hasattr(v, "__dict__"):
-            print()
-            print_dict_recursive(v, indent + 1)
+            # print()
+            pass
+            # print_dict_recursive(v, indent + 1)
         elif isinstance(v, dict):
-            print()
-            print_dict_recursive_dict(v, indent + 1)
+            # print()
+            pass
+            # print_dict_recursive_dict(v, indent + 1)
         else:
-            print(repr(v))
+            pass
+            # print(repr(v))
 
 
 class NodeVisitor(ast.NodeVisitor):
@@ -77,7 +83,7 @@ class NodeVisitor(ast.NodeVisitor):
             end_line=getattr(node, "end_lineno", node.lineno),
             docstring="",  # todo
         )
-        print(element)
+        print(__name__, 86, element)
         return element
 
     def visit_FunctionDef(self, node: ast.FunctionDef):
@@ -107,9 +113,11 @@ class NodeVisitor(ast.NodeVisitor):
     def visit_Call(self, node: ast.Call):
         self.scope_stack.append(self._get_name(node))
 
+        print(__name__, 117, node.__dict__)
+
         self.file.add_element(
             self.scope_stack,
-            self._create_code_element(node),
+            self._create_code_element(node),  # todo find exist node
             relation_type=RelationshipType.USE,
         )
 

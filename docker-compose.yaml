@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   scaffold-mcp:
     build:
@@ -10,27 +8,19 @@ services:
     stdin_open: true    # enables interactive input
     tty: true
     depends_on:
-      postgres:
-        condition: service_healthy
       neo4j:
         condition: service_healthy
 
-  postgres:
-    image: postgres:15
-    container_name: scaffold-postgres
+  chromadb:
+    image: chromadb/chroma:1.0.13
+    container_name: scaffold-chromadb
     restart: unless-stopped
     environment:
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${POSTGRES_DB}
-    ports:
-      - "5432:5432"
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 2s
-      timeout: 1s
-      retries: 5
-      start_period: 5s
+      - CHROMA_SERVER_HOST=0.0.0.0
+      - CHROMA_SERVER_HTTP_PORT=8000
+      - ALLOW_RESET=TRUE
+    volumes:
+      - chroma_data:/data
 
   neo4j:
     image: neo4j:5
@@ -38,15 +28,21 @@ services:
     restart: unless-stopped
     environment:
       - NEO4J_server_config_strict__validation_enabled=false
-      - NEO4J_AUTH=${NEO4J_AUTH}
+      - NEO4J_AUTH=none
       - NEO4J_USER=${NEO4J_USER}
       - NEO4J_PASSWORD=${NEO4J_PASSWORD}
+    volumes:
+      - neo4j_data:/data
     ports:
       - "7474:7474"   # Web UI
       - "7687:7687"   # Bolt
     healthcheck:
       test: ["CMD-SHELL", "cypher-shell -u $NEO4J_USER -p $NEO4J_PASSWORD 'RETURN 1'"]
-      interval: 1s
-      timeout: 3s
-      retries: 10
-      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+volumes:
+  chroma_data:
+  neo4j_data:

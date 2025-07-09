@@ -47,6 +47,7 @@ class FileNode(StructuredNode, ObjectMetaMixin):
     defines_methods = rTO(NT.FUNCTION, RT.DEFINE)
 
     # USE
+    uses_files = rTO(NT.FILE, RT.USE)
     uses_classes = rTO(NT.CLASS, RT.USE)
     uses_methods = rTO(NT.FUNCTION, RT.USE)
 
