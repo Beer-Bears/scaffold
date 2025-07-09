@@ -2,7 +2,6 @@ import pathlib
 
 from src.core.config import get_settings
 from src.core.vector.chunker import chunk_and_load_to_vectorstore
-from src.core.vector.retriever import get_retriever
 from src.database.connection import init_chromadb, init_neo4j
 from src.database.health import check_neo4j
 from src.generator.generator import save_graph_to_db
@@ -25,16 +24,18 @@ if __name__ == "__main__":
     save_graph_to_db(parser.nodes)
 
     # Vector RAG
-    client, vectorstore = init_chromadb()
-    chunk_and_load_to_vectorstore(
+    vectorstore = init_chromadb()
+    index = chunk_and_load_to_vectorstore(
         vector_store=vectorstore,
         root_dir=PROJECT_PATH,
     )
-    retriever = get_retriever(vectorstore)
-
-    results = retriever.invoke(
+    retriever = index.as_retriever(
+        similarity_top_k=5, choice_batch_size=5, embed_model=settings.vector.embed_model
+    )
+    responce = retriever.retrieve(
         "Where decorator_odd is used in project?",
     )
-    print(len(results), results)
+    print(*responce, sep="\n")
+
     # MCP Inteface
     mcp.run(**settings.mcp_server.model_dump())

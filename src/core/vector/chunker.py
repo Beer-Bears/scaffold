@@ -1,12 +1,22 @@
 import os
 
-from langchain_chroma import Chroma
-from tqdm import tqdm
+from llama_index.core import SimpleDirectoryReader, StorageContext, VectorStoreIndex
+from llama_index.vector_stores.chroma import ChromaVectorStore
 
-from src.core.vector.splitter import get_splitter
+from src.core.config import get_settings
+
+# SimpleDirectoryReader
+# https://docs.llamaindex.ai/en/stable/module_guides/loading/simpledirectoryreader/#simpledirectoryreader
+settings = get_settings().vector
 
 
-def chunk_and_load_to_vectorstore(vector_store: Chroma, root_dir: str):
+def get_meta(file_path):
+    return {"file_path": file_path}
+
+
+def chunk_and_load_to_vectorstore(
+    vector_store: ChromaVectorStore, root_dir: str
+) -> VectorStoreIndex:
     """
     Processes all files in a directory, splits them into chunks, and loads into ChromaDB
     """
@@ -17,39 +27,16 @@ def chunk_and_load_to_vectorstore(vector_store: Chroma, root_dir: str):
             full_path = os.path.join(dirpath, filename)
             all_files.append(full_path)
 
-    documents = []
-    metadatas = []
+    # TODO: Implement .ignore functionality
 
-    for file_path in tqdm(all_files, desc="Processing files"):
-        try:
-            ext = os.path.splitext(file_path)[1]
+    reader = SimpleDirectoryReader(input_files=all_files, file_metadata=get_meta)
 
-            splitter = get_splitter(file_identifier=file_path)
+    documents = reader.load_data(show_progress=True, num_workers=4)
 
-            with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
-                content = f.read()
+    storage_context = StorageContext.from_defaults(vector_store=vector_store)
 
-            chunks = splitter.split_text(content)
-
-            for i, chunk in enumerate(chunks):
-                documents.append(chunk)
-                metadatas.append(
-                    {"source": file_path, "chunk_index": i, "file_extension": ext}
-                )
-
-        except Exception as e:
-            print(f"Error processing {file_path}: {str(e)}")
-
-    if documents:
-        vector_store.add_texts(texts=documents, metadatas=metadatas)
-        print(
-            f"\n✅ Loaded {len(documents)} chunks from {len(all_files)} files into ChromaDB"
-        )
-    else:
-        print("❌ No documents to load")
-
-
-if __name__ == "__main__":
-    chunk_and_load_to_vectorstore(
-        root_dir="codebase/syntatic-1",
+    index = VectorStoreIndex.from_documents(
+        documents, storage_context=storage_context, embed_model=settings.embed_model
     )
+
+    return index

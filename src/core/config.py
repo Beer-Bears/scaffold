@@ -2,9 +2,8 @@ __all__ = ["get_settings", "AppSettings"]
 from functools import lru_cache
 from typing import Annotated, Literal
 
-from langchain_core.embeddings import Embeddings
-from langchain_huggingface import HuggingFaceEmbeddings
-from langchain_text_splitters import Language
+from llama_index.core.embeddings.multi_modal_base import MultiModalEmbedding
+from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from pydantic import BaseModel, Field
 from pydantic_settings import BaseSettings as _BaseSettings
 from pydantic_settings import SettingsConfigDict
@@ -20,30 +19,6 @@ DEFAULT_CHUNK_SIZE = 500
 DEFAULT_K_RETRIVE = 5
 DEFAULT_CHUNK_OVERLAP = 50
 
-EXTENSION_TO_LANGUAGE = {
-    ".py": Language.PYTHON,
-    ".js": Language.JS,
-    ".jsx": Language.JS,
-    ".ts": Language.JS,
-    ".tsx": Language.JS,
-    ".java": Language.JAVA,
-    ".kt": Language.KOTLIN,
-    ".cpp": Language.CPP,
-    ".go": Language.GO,
-    ".rb": Language.RUBY,
-    ".rs": Language.RUST,
-    ".php": Language.PHP,
-    ".swift": Language.SWIFT,
-    ".cs": Language.CSHARP,
-    ".pl": Language.PERL,
-    ".lua": Language.LUA,
-    ".html": Language.HTML,
-    ".htm": Language.HTML,
-    ".md": Language.MARKDOWN,
-    ".markdown": Language.MARKDOWN,
-    ".tex": Language.LATEX,
-}
-
 
 class VectorSettings(BaseSettings):
     # Retriever
@@ -58,11 +33,10 @@ class VectorSettings(BaseSettings):
     chunk_size: int = DEFAULT_CHUNK_SIZE
     chunk_overlap: int = DEFAULT_CHUNK_OVERLAP
 
-    # Splitter
-    language_dict: dict[str, Language] = EXTENSION_TO_LANGUAGE
-
     # Common
-    embedings_function: Embeddings = HuggingFaceEmbeddings()
+    embed_model: MultiModalEmbedding = HuggingFaceEmbedding(
+        model_name="BAAI/bge-base-en-v1.5"
+    )
 
 
 class DatabaseSettings(BaseSettings):

@@ -1,7 +1,7 @@
 __all__ = ["init_chromadb", "init_neo4j"]
 import chromadb
 from chromadb.config import Settings as ChromaSettings
-from langchain_chroma import Chroma
+from llama_index.vector_stores.chroma import ChromaVectorStore
 from neomodel import config  # type: ignore[import-untyped]
 
 from src.core.config import get_settings
@@ -9,11 +9,10 @@ from src.core.config import get_settings
 settings = get_settings()
 
 # --- ChromaDB ---
-# https://python.langchain.com/docs/integrations/vectorstores/chroma/
+# https://docs.llamaindex.ai/en/stable/examples/vector_stores/ChromaIndexDemo/
 
 
-def init_chromadb() -> tuple[chromadb.ClientAPI, Chroma]:
-    print("establishing connection with chromadb")
+def init_chromadb() -> ChromaVectorStore:
     chroma_settings = ChromaSettings(
         chroma_server_host=settings.database.chromadb_host,
         chroma_server_http_port=settings.database.chromadb_port,
@@ -24,16 +23,12 @@ def init_chromadb() -> tuple[chromadb.ClientAPI, Chroma]:
         settings=chroma_settings,
     )
     client.heartbeat()
-    print("client established")
-    collection = client.get_or_create_collection(settings.database.chromadb_collection)
 
-    vector_store = Chroma(
-        client=client,
-        collection_name=collection.name,
-        embedding_function=settings.vector.embedings_function,
+    chroma_collection = client.get_or_create_collection(
+        settings.database.chromadb_collection
     )
-
-    return (client, vector_store)
+    vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
+    return vector_store
 
 
 # --- Neo4j ---
