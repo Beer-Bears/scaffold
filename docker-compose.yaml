@@ -5,6 +5,8 @@ services:
     container_name: scaffold-mcp-prod
     env_file:
       - .env
+    stdin_open: true    # enables interactive input
+    tty: true
     depends_on:
       neo4j:
         condition: service_healthy

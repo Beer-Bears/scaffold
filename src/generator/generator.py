@@ -1,6 +1,6 @@
-from typing import Type
+from typing import Type, Union
 
-from neomodel import StructuredNode
+from neomodel import RelationshipFrom, RelationshipTo, StructuredNode
 
 from src.database.models.nodes import ClassNode, FileNode, FolderNode, FunctionNode
 from src.generator.graph_types import NodeType, RelationshipType
@@ -21,6 +21,83 @@ def save_graph_to_db(graph: dict[int, Node]) -> None:
 
     # Шаг 3 — установить связи
     DbRelations.make_db_relations(id_to_db_node, enriched_graph)
+
+
+ALL_NODE_CLASSES = [FunctionNode, ClassNode, FileNode, FolderNode]
+
+
+def get_code(path: str, start_line: int, end_line: int) -> str:
+    """
+    Return part of source code by path, start_line and end_line.
+    Lines are 1-indexed, inclusive.
+    """
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            lines = f.readlines()
+            # Проверка границ
+            if start_line < 1 or end_line > len(lines) or start_line > end_line:
+                return f"[Invalid line range: {start_line}-{end_line}]"
+            return "".join(lines[start_line - 1 : end_line])
+    except FileNotFoundError:
+        return f"[File not found: {path}]"
+    except Exception as e:
+        return f"[Error reading file: {e}]"
+
+
+def get_node_information(node_name: str) -> str:
+    node_instance: Union[FunctionNode, ClassNode, FileNode, FolderNode, None] = None
+
+    # Попытка найти узел среди всех типов
+    for NodeCls in ALL_NODE_CLASSES:
+        try:
+            node_instance = NodeCls.nodes.filter(name=node_name).first()
+            break
+        except Exception:
+            continue
+
+    if not node_instance:
+        return f"Node with name '{node_name}' not found."
+
+    # Метаинформация
+    meta_info = [
+        f"name: {node_instance.name}",
+        f"path: {node_instance.path}",
+        f"start_line: {node_instance.start_line}",
+        f"end_line: {node_instance.end_line}",
+        f"docstring: {node_instance.docstring}",
+    ]
+    meta_block = "\n".join(meta_info)
+
+    # Представление узла
+    code_repr = get_code(
+        node_instance.path, node_instance.start_line, node_instance.end_line
+    )
+
+    # Связи
+    relations_block = []
+    for attr in dir(node_instance.__class__):
+        if attr.startswith("__"):
+            continue
+        rel_descriptor = getattr(node_instance.__class__, attr)
+        if isinstance(rel_descriptor, (RelationshipTo, RelationshipFrom)):
+            related = getattr(node_instance, attr)
+            try:
+                targets = related.all()
+                for t in targets:
+                    relations_block.append(
+                        f"{attr}: {t.__class__.__name__} {getattr(t, 'name', '???')}"
+                    )
+            except Exception as e:
+                relations_block.append(f"{attr}: ERROR - {str(e)}")
+
+    return (
+        meta_block
+        + "\nSource code:"
+        + code_repr
+        + "\n------\n"
+        + "Relationships:\n"
+        + "\n".join(relations_block)
+    )
 
 
 def enrich_graph(graph: dict[int, Node]) -> dict[int, Node]:

@@ -4,7 +4,7 @@ from src.core.config import get_settings
 from src.core.vector.chunker import chunk_and_load_to_vectorstore
 from src.database.connection import init_chromadb, init_neo4j
 from src.database.health import check_neo4j
-from src.generator.generator import save_graph_to_db
+from src.generator.generator import get_node_information, save_graph_to_db
 from src.mcp.server import mcp
 from src.parsers.python.core import Parser
 
@@ -43,6 +43,13 @@ if __name__ == "__main__":
         "Where decorator_odd is used in project?",
     )
     print(*responce, sep="\n")
+
+    while True:
+        print("-" * 100, "\n" * 3)
+        name = input()
+        print(get_node_information(name))
+        if name == "exit":
+            break
 
     # MCP Inteface
     mcp.run(**settings.mcp_server.model_dump())
