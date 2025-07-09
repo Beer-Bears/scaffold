@@ -26,7 +26,6 @@ if __name__ == "__main__":
     parser = Parser(pathlib.Path(PROJECT_PATH))
     parser.parse()
 
-
     if not local_test:
         save_graph_to_db(parser.nodes)
         mcp.run(transport="streamable-http", host="0.0.0.0", port=8000)
@@ -47,4 +46,3 @@ if __name__ == "__main__":
 
     # MCP Inteface
     mcp.run(**settings.mcp_server.model_dump())
-
