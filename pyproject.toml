@@ -18,6 +18,7 @@ llama-index-core = "^0.12.47"
 llama-index-vector-stores-chroma = "^0.4.2"
 llama-index-embeddings-huggingface = "^0.5.5"
 llama-index-llms-openai = "^0.4.7"
+torch = { version = ">=1.0", platform = "cpu" }
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.4.1"
