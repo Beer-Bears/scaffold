@@ -5,7 +5,6 @@ from neomodel import db
 
 from src.generator.generator import save_graph_to_db
 from src.parsers.python.core import Parser
-from tests.integrations.conftest import setup_test_db
 
 PROJECTS = ["syntatic-1", "realworld-1"]
 

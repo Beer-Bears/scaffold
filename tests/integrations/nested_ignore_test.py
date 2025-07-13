@@ -1,11 +1,10 @@
 import pathlib
 
 import pytest
-from neomodel import clear_neo4j_database, config, db
+from neomodel import db
 
 from src.generator.generator import save_graph_to_db
 from src.parsers.python.core import Parser
-from tests.integrations.conftest import setup_test_db
 
 PROJECTS = ["ignore-1"]
 
