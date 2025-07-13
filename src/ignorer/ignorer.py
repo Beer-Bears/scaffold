@@ -1,7 +1,5 @@
 from pathlib import Path
-from pathspec import PathSpec
 
-from pathlib import Path
 from pathspec import PathSpec
 
 

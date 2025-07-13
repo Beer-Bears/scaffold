@@ -2,6 +2,7 @@ import pytest
 from neomodel import clear_neo4j_database, config, db
 from testcontainers.neo4j import Neo4jContainer
 
+
 @pytest.fixture(scope="module", autouse=True)
 def setup_test_db(neo4j_container: Neo4jContainer):
     host, port = (

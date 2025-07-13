@@ -5,10 +5,10 @@ from typing import Dict, List
 
 from src.generator.graph_types import NodeType
 from src.generator.models import MetaInfo, Node, Relationship
+from src.ignorer.ignorer import Ignorer
 from src.parsers.python.import_node_visitor import ImportNodeVisitor
 from src.parsers.python.models import FileGraph
 from src.parsers.python.node_visitor import NodeVisitor
-from src.ignorer.ignorer import Ignorer
 
 
 class Parser:

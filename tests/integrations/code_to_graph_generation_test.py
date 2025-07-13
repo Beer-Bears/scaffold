@@ -5,10 +5,10 @@ from neomodel import db
 
 from src.generator.generator import save_graph_to_db
 from src.parsers.python.core import Parser
-
 from tests.integrations.conftest import setup_test_db
 
 PROJECTS = ["syntatic-1", "realworld-1"]
+
 
 @pytest.mark.parametrize("project", PROJECTS)
 def test_project_parsing_and_saving(project: str, setup_test_db):
