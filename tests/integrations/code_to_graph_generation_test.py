@@ -1,35 +1,14 @@
 import pathlib
 
 import pytest
-from neomodel import clear_neo4j_database, config, db
-from testcontainers.neo4j import Neo4jContainer
+from neomodel import db
 
 from src.generator.generator import save_graph_to_db
 from src.parsers.python.core import Parser
 
+from tests.integrations.conftest import setup_test_db
+
 PROJECTS = ["syntatic-1", "realworld-1"]
-
-
-@pytest.fixture(scope="module", autouse=True)
-def setup_test_db(neo4j_container: Neo4jContainer):
-    host, port = (
-        neo4j_container.get_container_host_ip(),
-        neo4j_container.get_exposed_port(7687),
-    )
-    config.DATABASE_URL = f"bolt://neo4j:password@{host}:{port}"
-    yield
-
-
-@pytest.fixture(scope="session")
-def neo4j_container():
-    with Neo4jContainer(username="neo4j", password="password") as container:
-        yield container
-
-
-@pytest.fixture(scope="function", autouse=True)
-def clear_db_for_each_test():
-    clear_neo4j_database(db)
-
 
 @pytest.mark.parametrize("project", PROJECTS)
 def test_project_parsing_and_saving(project: str, setup_test_db):
