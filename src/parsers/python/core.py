@@ -5,6 +5,7 @@ from typing import Dict, List
 
 from src.generator.graph_types import NodeType
 from src.generator.models import MetaInfo, Node, Relationship
+from src.ignorer.ignorer import Ignorer
 from src.parsers.python.import_node_visitor import ImportNodeVisitor
 from src.parsers.python.models import FileGraph
 from src.parsers.python.node_visitor import NodeVisitor
@@ -57,6 +58,10 @@ class Parser:
         """
         file_paths = [f for f in self.path.rglob("*.py") if f.is_file()]
         for file_path in file_paths:
+            ignorer = Ignorer(file_path.parent, self.path)
+            if ignorer.is_ignore(file_path):
+                continue
+
             file = self._parse_file(file_path)
             if not file:
                 continue
