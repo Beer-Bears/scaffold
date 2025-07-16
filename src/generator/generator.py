@@ -100,7 +100,9 @@ def get_node_information(node_name: str) -> str:
     results = retriever.retrieve(f"{node_name}")
     vector_result = ""
     for result in results:
-        vector_result += json.dumps(result.model_dump()) + "\n"
+        vector_result += (
+            f"source:{result.get_text()} metadata:{json.dumps(result.json())}\n"
+        )
 
     return (
         meta_block
