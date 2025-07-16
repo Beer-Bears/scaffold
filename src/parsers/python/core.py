@@ -150,11 +150,13 @@ class Parser:
 
 
 if __name__ == "__main__":
-    parser = Parser(pathlib.Path("codebase"))
+    parser = Parser(
+        pathlib.Path("/home/dmitrii/PycharmProjects/scaffold/codebase/test")
+    )
     parser.parse()
 
     print("\n✅ Parsing complete. Node graph generated.")
-    # parser.print_node_graph()
+    parser.print_node_graph()
 
     if parser.parse_errors:
         print("\n--- PARSE ERRORS ---")

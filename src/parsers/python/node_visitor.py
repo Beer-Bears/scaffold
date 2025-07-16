@@ -91,6 +91,7 @@ class NodeVisitor(ast.NodeVisitor):
 
         self.file.add_element(
             self.scope_stack,
+            self.scope_stack,
             self._create_code_element(node),
             relation_type=RelationshipType.DEFINE,
         )
@@ -102,6 +103,7 @@ class NodeVisitor(ast.NodeVisitor):
         self.scope_stack.append(node.name)
 
         self.file.add_element(
+            self.scope_stack,
             self.scope_stack,
             self._create_code_element(node),
             relation_type=RelationshipType.DEFINE,
@@ -115,9 +117,13 @@ class NodeVisitor(ast.NodeVisitor):
 
         print(__name__, 117, node.__dict__)
 
+        # find exist node
+        scope, element = self.file.get_node(self.scope_stack, self._get_name(node))
+
         self.file.add_element(
+            scope or self.scope_stack,
             self.scope_stack,
-            self._create_code_element(node),  # todo find exist node
+            element or self._create_code_element(node),
             relation_type=RelationshipType.USE,
         )
 
@@ -128,6 +134,7 @@ class NodeVisitor(ast.NodeVisitor):
         self.scope_stack.append(node.name)
 
         self.file.add_element(
+            self.scope_stack,
             self.scope_stack,
             self._create_code_element(node),
             relation_type=RelationshipType.DEFINE,
