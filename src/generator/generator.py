@@ -1,10 +1,15 @@
+import json
 from typing import Type, Union
 
 from neomodel import RelationshipFrom, RelationshipTo, StructuredNode
 
+from src.core.config import get_settings
+from src.core.vector.index import get_existing_chroma_index
 from src.database.models.nodes import ClassNode, FileNode, FolderNode, FunctionNode
 from src.generator.graph_types import NodeType, RelationshipType
 from src.generator.models import MetaInfo, Node, Relationship
+
+settings = get_settings()
 
 
 def save_graph_to_db(graph: dict[int, Node]) -> None:
@@ -67,7 +72,6 @@ def get_node_information(node_name: str) -> str:
         f"docstring: {node_instance.docstring}",
     ]
     meta_block = "\n".join(meta_info)
-
     # Представление узла
     code_repr = get_code(
         node_instance.path, node_instance.start_line, node_instance.end_line
@@ -89,6 +93,16 @@ def get_node_information(node_name: str) -> str:
                     )
             except Exception as e:
                 relations_block.append(f"{attr}: ERROR - {str(e)}")
+    index = get_existing_chroma_index()
+    retriever = index.as_retriever(
+        similarity_top_k=5, choice_batch_size=5, embed_model=settings.vector.embed_model
+    )
+    results = retriever.retrieve(f"{node_name}")
+    vector_result = ""
+    for result in results:
+        vector_result += (
+            f"source:{result.get_text()} metadata:{json.dumps(result.json())}\n"
+        )
 
     return (
         meta_block
@@ -97,6 +111,8 @@ def get_node_information(node_name: str) -> str:
         + "\n------\n"
         + "Relationships:\n"
         + "\n".join(relations_block)
+        + "\nVector RAG:\n"
+        + vector_result
     )
 
 

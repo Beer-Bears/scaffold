@@ -5,11 +5,14 @@ services:
     container_name: scaffold-mcp-prod
     env_file:
       - .env
-    stdin_open: true    # enables interactive input
     tty: true
+    ports:
+      - "8000:8080"
     depends_on:
       neo4j:
         condition: service_healthy
+    volumes:
+      - ${PROJECT_PATH}:/app/codebase
 
   chromadb:
     image: chromadb/chroma:1.0.13
@@ -35,7 +38,7 @@ services:
       - neo4j_data:/data
     ports:
       - "7474:7474"   # Web UI
-      - "7687:7687"   # Bolt
+      # - "7687:7687"   # Bolt
     healthcheck:
       test: ["CMD-SHELL", "cypher-shell -u $NEO4J_USER -p $NEO4J_PASSWORD 'RETURN 1'"]
       interval: 5s

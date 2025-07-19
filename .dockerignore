@@ -1,5 +1,4 @@
 *
-!codebase/
 !src/
 !.env
 !poetry.lock
