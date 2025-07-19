@@ -147,4 +147,10 @@ You can now ask your AI agent to use the Scaffold tool with prompts like:
 
 ### Contributing
 
-Scaffold is an open-source project and we welcome contributions. Please visit the [official GitHub repository](https://github.com/Beer-Bears/scaffold) to open an issue for bug reports, suggest features, or submit a pull request with your enhancements.
+<div align="center">
+<a href="https://github.com/beer-bears/scaffold/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=beer-bears/scaffold" />
+</a>
+</div>
+
+Scaffold is an open-source project and we welcome contributions from the community! Whether it's reporting a bug, discussing features, or submitting code, your help is valued.
