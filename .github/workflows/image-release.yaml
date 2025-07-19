@@ -1,4 +1,4 @@
-name: Build and Push Docker Image on Release or Manual Trigger
+name: Build and Push Docker Image
 
 on:
   push:
