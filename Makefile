@@ -61,5 +61,12 @@ pre-commit-run: ##@Utils Run pre-commit on all files
 pre-commit-clean: ##@Utils Clean all installed pre-commit
 	poetry run pre-commit clean
 
+.PHONY: tag-unstable
+tag-unstable: ##@Utils Create & push unstable tag for this branch
+	$(eval SHA := $(shell git rev-parse --short HEAD))
+	$(eval BRANCH := $(shell git rev-parse --abbrev-ref HEAD | sed 's/[^a-zA-Z0-9._-]/-/g'))
+	git tag unstable-$(BRANCH)-$(SHA)
+	git push origin unstable-$(BRANCH)-$(SHA)
+	
 %::
 	echo $(MESSAGE)
