@@ -929,14 +929,14 @@ test = ["pytest (>=6)"]
 
 [[package]]
 name = "fastmcp"
-version = "2.10.4"
+version = "2.10.5"
 description = "The fast, Pythonic way to build MCP servers and clients."
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "fastmcp-2.10.4-py3-none-any.whl", hash = "sha256:a998882018806198fdcde57b06816a82028a23de24d647bc10e72c0866431e0f"},
-    {file = "fastmcp-2.10.4.tar.gz", hash = "sha256:49c6de71fa2f7132af4592f278e003e83b86b15a187a26cf2502bf3dce8155ba"},
+    {file = "fastmcp-2.10.5-py3-none-any.whl", hash = "sha256:ab218f6a66b61f6f83c413d37aa18f5c30882c44c8925f39ecd02dd855826540"},
+    {file = "fastmcp-2.10.5.tar.gz", hash = "sha256:f829e0b11c4d136db1d81e20e8acb19cf5108f64059482d1853f3c940326cf04"},
 ]
 
 [package.dependencies]
@@ -5444,4 +5444,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.11"
-content-hash = "81e3b2ed53842a6b31400312061abd5552f0b5630a64d567e3ade84f1270139b"
+content-hash = "ebd461e6907756a02288ddb930e20344c853736b37a1504603666a830a47c004"
