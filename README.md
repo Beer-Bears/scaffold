@@ -2,6 +2,52 @@
 <a name="logo" href="https://raw.githubusercontent.com/Beer-Bears/scaffold/main/docs/img/scaffold-logo.png"><img align="center" src="https://raw.githubusercontent.com/Beer-Bears/scaffold/main/docs/img/scaffold-logo.png" alt="Scaffold Banner" style="width:85%;height:100%"/></a>
 </h1>
 
+## Quick start
+### Startup
+```bash
+## Create .env:
+cp .env.example .env  # Replace variables if you wish
+
+## in the __main__.py set the path to your python project
+PROJECT_PATH = "./codebase"
+## or put some python files to the `codebase` directory
+
+## Run the app.
+docker-compose up
+```
+
+### Cursor setup:
+Add mcp server into the mcp.json:
+```
+{
+  "mcpServers": {
+    "scaffold-mcp": {
+      "url": "http://localhost:8000/mcp"
+    }
+  }
+}
+```
+
+### Look at graph
+Neo4j webui with creds from .env:
+
+http://localhost:7474/
+
+### HTTP request
+```
+curl -N -X POST http://localhost:8000/mcp/   -H "Content-Type: application/json"   -H "Accept: application/json, text/event-stream"   -d '{
+    "jsonrpc": "2.0",
+    "id": "1",
+    "method": "tools/call",
+    "params": {
+      "name": "node_information",
+      "arguments": {
+        "node_name": "NodeName"  # Set name of file, class, func, ...
+      }
+    }
+  }'
+```
+
 ## Introduction
 
 **Scaffold** is a specialized RAG (Retrieval-Augmented Generation) system designed to revolutionize how development teams interact with large codebases. Born from real-world frustrations with traditional documentation and AI-assisted development, Scaffold provides the structural foundation AI agents need to effectively construct, maintain, and repair complex software projects.
