@@ -6,7 +6,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  BUILD_CONTEXT: ./src
+  BUILD_CONTEXT: .
   IMAGE_NAME: beer-bears/scaffold
 
 jobs:
