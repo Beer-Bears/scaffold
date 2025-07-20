@@ -9,9 +9,9 @@ from src.generator.generator import (
 mcp = FastMCP(
     name="Scaffold MCP",
     instructions="""
-    This is a MCP server to retrieve data from soursecode of real code projects. 
+    This is a MCP server to retrieve data from source code of real code projects. 
     It provide tools for retrieving actual and relevant context when right data is specified.
-    Better to use this mcp call rather than grepping files reqursively.
+    Better to use this mcp call rather than grepping files recursively.
     """,
     stateless_http=True,
 )
