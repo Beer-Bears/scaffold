@@ -21,7 +21,7 @@ class ChangeHandler(FileSystemEventHandler):
             self.timer.cancel()
 
         self.timer = threading.Timer(self.debounce_interval, run_indexing, [event])
-        run_indexing(force_reinit=True)
+        self.timer.start()
 
 
 def start_watcher(path: str | Path):

@@ -12,7 +12,7 @@ PROJECT_PATH = "./codebase/"
 if __name__ == "__main__":
     run_indexing()
 
-    w = threading.Thread(target=start_watcher, daemon=True)
+    w = threading.Thread(target=start_watcher, args=(PROJECT_PATH,), daemon=True)
     w.start()
 
     mcp.run(**settings.mcp_server.model_dump())
