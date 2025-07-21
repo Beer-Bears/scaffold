@@ -6,35 +6,6 @@ from src.generator.graph_types import NodeType, RelationshipType
 from src.parsers.python.models import CodeElement, FileGraph
 
 
-def print_dict_recursive(obj, indent=1):
-    if not hasattr(obj, "__dict__"):
-        print("  " * indent + repr(obj))
-        return
-    for key, value in obj.__dict__.items():
-        print("  " * indent + f"{key}: ", end="")
-        if hasattr(value, "__dict__"):
-            print()
-            print_dict_recursive(value, indent + 1)
-        elif isinstance(value, dict):
-            print()
-            print_dict_recursive_dict(value, indent + 1)
-        else:
-            print(repr(value))
-
-
-def print_dict_recursive_dict(d: dict, indent=0):
-    for k, v in d.items():
-        print("  " * indent + f"{k}: ", end="")
-        if hasattr(v, "__dict__"):
-            print()
-            print_dict_recursive(v, indent + 1)
-        elif isinstance(v, dict):
-            print()
-            print_dict_recursive_dict(v, indent + 1)
-        else:
-            print(repr(v))
-
-
 class NodeVisitor(ast.NodeVisitor):
     def __init__(self, path):
         self.file = FileGraph(path)
@@ -127,14 +98,9 @@ class NodeVisitor(ast.NodeVisitor):
         if hasattr(node, "func") and hasattr(node.func, "value"):
             keep_scope = False
 
-        print("\n[visit Call] node_vistor, 118")
-        print_dict_recursive(node)
-        print(f"{self.scope_stack=}")
-
         # find exist node
         scope, element = self.file.get_node(self.scope_stack, self._get_name(node))
-        print(f"Find exist node: {scope=} , {element=}")
-        print()
+
         self.file.add_element(
             scope or self.scope_stack,
             self.scope_stack,

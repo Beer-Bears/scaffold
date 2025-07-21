@@ -1,7 +1,6 @@
 import ast
 import pathlib
 from pathlib import Path
-from pprint import pprint
 from typing import Dict, List
 
 from src.generator.graph_types import NodeType
@@ -40,7 +39,7 @@ class Parser:
         Handles potential parsing errors.
         """
         tree = self._get_ast_tree_by_file_path(file_path)
-        pprint(ast.dump(tree))
+
         visitor = NodeVisitor(file_path)
         visitor.visit(tree)
         file = visitor.file
@@ -51,9 +50,7 @@ class Parser:
         # file docstring
         module_docstring = ast.get_docstring(tree)
         file.docstring = module_docstring
-        # pprint(file.nodes)
-        # pprint(file.relations)
-        # file.relations.pop(0)
+
         return file
 
     def parse(self):
