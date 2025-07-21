@@ -16,7 +16,9 @@ settings = get_settings().vector
 def get_meta(file_path):
     return {"file_path": file_path}
 
+
 logger = logging.getLogger(__name__)
+
 
 def chunk_and_load_single_file(file_path: str) -> VectorStoreIndex:
     """

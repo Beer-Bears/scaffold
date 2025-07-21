@@ -41,7 +41,6 @@ class ImportNodeVisitor(ast.NodeVisitor):
 
         for imported_module_str in imported_modules_str:
 
-
             imported_file_path, imported_module_path = self.module_to_py_path(
                 imported_module_str
             )
@@ -105,7 +104,6 @@ class ImportNodeVisitor(ast.NodeVisitor):
                     importing=importing_file_id, imported=imported_node_id
                 )
 
-
     def match_file_by_path(
         self, path: str
     ) -> Tuple[bool, Optional[int], Optional[Node]]:
@@ -134,7 +132,6 @@ class ImportNodeVisitor(ast.NodeVisitor):
         for node_id in [r.node for r in file.relationships]:
             if self.nodes[node_id].meta.name == imported_node_str:
                 return node_id
-
 
     def module_to_py_path(self, module: str) -> Tuple[str, str]:
         """

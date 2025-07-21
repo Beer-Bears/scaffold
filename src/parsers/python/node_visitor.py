@@ -75,19 +75,6 @@ class NodeVisitor(ast.NodeVisitor):
         self.generic_visit(node)
         self.scope_stack.pop()
 
-    def visit_Call(self, node: ast.Call):
-        self.scope_stack.append(self._get_name(node))
-
-
-        self.file.add_element(
-            self.scope_stack,
-            self._create_code_element(node),  # todo find exist node
-            relation_type=RelationshipType.USE,
-        )
-
-        self.generic_visit(node)
-        self.scope_stack.pop()
-
     def visit_AsyncFunctionDef(self, node: ast.AsyncFunctionDef):
         self.scope_stack.append(node.name)
 

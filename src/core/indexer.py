@@ -72,4 +72,6 @@ def run_indexing(file_path: str | Path):
     save_graph_to_db(parser.nodes)
 
     duration = time.time() - start_time
-    logger.info(f"[Indexer] Indexing process for file finished in {duration:.2f} seconds.")
+    logger.info(
+        f"[Indexer] Indexing process for file finished in {duration:.2f} seconds."
+    )

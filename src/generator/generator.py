@@ -19,7 +19,6 @@ def save_graph_to_db(graph: dict[int, Node]) -> None:
     # Шаг 1 — обогатить связи в графе
     enriched_graph = enrich_graph(graph)
 
-
     # Шаг 2 — создать все узлы
     id_to_db_node = DbNodes.make_db_nodes(enriched_graph)
 

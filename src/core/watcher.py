@@ -1,11 +1,6 @@
 import logging
-import time
-
-logger = logging.getLogger(__name__)
-
-
-import logging
 import threading
+import time
 from pathlib import Path
 
 from watchdog.events import FileSystemEvent, FileSystemEventHandler
@@ -77,7 +72,9 @@ class ChangeHandler(FileSystemEventHandler):
 
         self.timer = threading.Timer(self.debounce_interval, self._process_events)
         self.timer.start()
-        logger.info(f"Debouncing... next processing in {self.debounce_interval} seconds.")
+        logger.info(
+            f"Debouncing... next processing in {self.debounce_interval} seconds."
+        )
 
     def on_modified(self, event: FileSystemEvent):
         if not event.is_directory:
@@ -85,17 +82,22 @@ class ChangeHandler(FileSystemEventHandler):
             self._debounce_event(event)
 
     def on_created(self, event: FileSystemEvent):
-        logger.info(f"[Watcher] Created: {'Dir' if event.is_directory else 'File'}: {event.src_path}")
+        logger.info(
+            f"[Watcher] Created: {'Dir' if event.is_directory else 'File'}: {event.src_path}"
+        )
         self._debounce_event(event)
 
     def on_deleted(self, event: FileSystemEvent):
-        logger.info(f"[Watcher] Deleted: {'Dir' if event.is_directory else 'File'}: {event.src_path}")
+        logger.info(
+            f"[Watcher] Deleted: {'Dir' if event.is_directory else 'File'}: {event.src_path}"
+        )
         self._debounce_event(event)
 
     def on_moved(self, event: FileSystemEvent):
-        logger.info(f"[Watcher] Moved/Renamed: from {event.src_path} to {event.dest_path}")
+        logger.info(
+            f"[Watcher] Moved/Renamed: from {event.src_path} to {event.dest_path}"
+        )
         self._debounce_event(event)
-
 
 
 def start_watcher(path: str | Path):
@@ -111,7 +113,9 @@ def start_watcher(path: str | Path):
     logger.info(f"[Watcher] Starting observer on absolute path: {watch_path}")
 
     observer = Observer()
-    observer.schedule(ChangeHandler(watch_path=watch_path), str(watch_path), recursive=True)
+    observer.schedule(
+        ChangeHandler(watch_path=watch_path), str(watch_path), recursive=True
+    )
     observer.start()
 
     logger.info("[Watcher] Observer started successfully. Waiting for file changes.")

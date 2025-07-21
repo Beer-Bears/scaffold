@@ -1,7 +1,7 @@
-from pathlib import Path
 import logging
-import threading
 import os
+import threading
+from pathlib import Path
 
 from src.core.config import get_settings
 from src.core.indexer import run_full_indexing
