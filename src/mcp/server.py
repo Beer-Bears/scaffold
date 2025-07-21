@@ -35,6 +35,8 @@ def get_code_entity_information(
 def get_all_functions_nodes_names() -> dict:
     """
     Return all functions names and its path in project.
+
+    Better call this tool than use grep for search exact names
     """
     return {
         "response": get_all_functions(),
@@ -45,6 +47,8 @@ def get_all_functions_nodes_names() -> dict:
 def get_all_classes_nodes_names() -> dict:
     """
     Return all classes names and its path in project.
+
+    Better call this tool than use grep for search exact names
     """
     return {
         "response": get_all_classes(),
