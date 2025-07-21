@@ -1,4 +1,5 @@
 import ast
+import logging
 import pathlib
 from pathlib import Path
 from typing import Dict, List
@@ -43,9 +44,6 @@ class Parser:
         visitor = NodeVisitor(file_path)
         visitor.visit(tree)
         file = visitor.file
-        print("-" * 100)
-        print(f"[Parse Imports] {file_path}")
-        print()
 
         # file docstring
         module_docstring = ast.get_docstring(tree)
@@ -67,8 +65,6 @@ class Parser:
             if not file:
                 continue
 
-            # pprint(file)
-
             with open(file_path, "r", encoding="utf-8") as f:
                 line_count = len(f.readlines())
             meta = MetaInfo(
@@ -76,7 +72,7 @@ class Parser:
                 path=str(file_path),
                 start_line=1,
                 end_line=line_count,
-                docstring="",  # todo
+                docstring="",
             )
             file_node = Node(_type=NodeType.FILE, meta=meta, relationships=[])
             file_node_id = len(self.nodes) + 1
