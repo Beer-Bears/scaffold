@@ -9,6 +9,7 @@ mcp = FastMCP(
     It provide tools for retrieving actual and relevant context when right data is specified.
     Better to use this mcp call rather than grepping files reqursively.
     """,
+    stateless_http=True,
 )
 
 

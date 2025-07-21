@@ -51,6 +51,11 @@ class FileNode(StructuredNode, ObjectMetaMixin):
     uses_classes = rTO(NT.CLASS, RT.USE)
     uses_methods = rTO(NT.FUNCTION, RT.USE)
 
+    # IMPORT
+    imports_files = rTO(NT.FILE, RT.IMPORT)
+    imports_classes = rTO(NT.CLASS, RT.IMPORT)
+    imports_methods = rTO(NT.FUNCTION, RT.IMPORT)
+
 
 class FolderNode(StructuredNode, ObjectMetaMixin):
     path = StringProperty(unique_index=True, required=True)

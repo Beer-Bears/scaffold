@@ -1,6 +1,6 @@
 from collections import defaultdict
 from dataclasses import dataclass
-from typing import Optional
+from typing import Optional, Tuple
 
 from src.generator.graph_types import NodeType, RelationshipType
 from src.generator.models import Relationship
@@ -57,6 +57,11 @@ class FileGraph:
 
         return _id
 
+    def get_scope_id_no_create(self, scope_list: list[str]) -> Optional[int]:
+        scope = ".".join(scope_list)
+        _id = self.scope_to_id.get(scope, None)
+        return _id
+
     def get_name_of_node_in_scope(self, scope_id: int) -> Optional[str]:
         scope = self.id_to_scope.get(scope_id, None)
         if scope is None:
@@ -64,11 +69,15 @@ class FileGraph:
         return scope.split(".")[-1]
 
     def add_element(
-        self, scope_list: list[str], elem: CodeElement, relation_type: RelationshipType
+        self,
+        elem_scope_list: list[str],
+        parent_scope_list: list[str],
+        elem: CodeElement,
+        relation_type: RelationshipType,
     ) -> None:
-        scope_id = self.get_scope_id(scope_list)
+        scope_id = self.get_scope_id(elem_scope_list)
         self.nodes[scope_id] = elem
-        parent_id = self.get_parent_id(scope_list)
+        parent_id = self.get_parent_id(parent_scope_list)
         # print(scope_id, scope_list, parent_id)
         self.relations[parent_id].append(
             Relationship(relation_type=relation_type, parent=parent_id, node=scope_id)
@@ -79,5 +88,24 @@ class FileGraph:
         _id = self.scope_to_id.get(scope, None)
         assert (
             _id is not None
-        ), f"Parent have to exist always: \n{self.scope_to_id}\n{self.id_to_scope}\n {_id} -> {scope}"
+        ), f"Parent have to exist always:\n  {self.scope_to_id}\n{self.id_to_scope}\n  {_id} -> {scope=} {scope_list=}"
         return _id
+
+    def get_node(
+        self, scope_list: list[str], node_name: str
+    ) -> Tuple[Optional[list[str]], Optional[CodeElement]]:
+        """
+        :return: if found - tuple of scope + element
+        """
+        # if scope list contains node_name ( class/function/node )
+        # -> cut from end
+
+        for scope_shift in range(len(scope_list) - 1, -1, -1):
+            # increment cut from end
+            scope = scope_list[:scope_shift] + [node_name]
+            scope_id = self.get_scope_id_no_create(scope)
+
+            if scope_id is not None:
+                return scope, self.nodes[scope_id]
+
+        return None, None

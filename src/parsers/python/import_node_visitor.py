@@ -141,7 +141,7 @@ class ImportNodeVisitor(ast.NodeVisitor):
         assert type(imported) is int, type(imported)
         self.nodes[importing].relationships.append(
             Relationship(
-                relation_type=RelationshipType.USE, parent=importing, node=imported
+                relation_type=RelationshipType.IMPORT, parent=importing, node=imported
             )
         )
 

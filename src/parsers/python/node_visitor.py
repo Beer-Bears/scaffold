@@ -6,41 +6,6 @@ from src.generator.graph_types import NodeType, RelationshipType
 from src.parsers.python.models import CodeElement, FileGraph
 
 
-def print_dict_recursive(obj, indent=1):
-    if not hasattr(obj, "__dict__"):
-        # print("  " * indent + repr(obj))
-        return
-    for key, value in obj.__dict__.items():
-        # print("  " * indent + f"{key}: ", end="")
-        if hasattr(value, "__dict__"):
-            # print()
-            pass
-            # print_dict_recursive(value, indent + 1)
-        elif isinstance(value, dict):
-            pass
-            # print()
-            # print_dict_recursive_dict(value, indent + 1)
-        else:
-            pass
-            # print(repr(value))
-
-
-def print_dict_recursive_dict(d: dict, indent=0):
-    for k, v in d.items():
-        # print("  " * indent + f"{k}: ", end="")
-        if hasattr(v, "__dict__"):
-            # print()
-            pass
-            # print_dict_recursive(v, indent + 1)
-        elif isinstance(v, dict):
-            # print()
-            pass
-            # print_dict_recursive_dict(v, indent + 1)
-        else:
-            pass
-            # print(repr(v))
-
-
 class NodeVisitor(ast.NodeVisitor):
     def __init__(self, path):
         self.file = FileGraph(path)
@@ -91,6 +56,7 @@ class NodeVisitor(ast.NodeVisitor):
 
         self.file.add_element(
             self.scope_stack,
+            self.scope_stack,
             self._create_code_element(node),
             relation_type=RelationshipType.DEFINE,
         )
@@ -103,22 +69,9 @@ class NodeVisitor(ast.NodeVisitor):
 
         self.file.add_element(
             self.scope_stack,
+            self.scope_stack,
             self._create_code_element(node),
             relation_type=RelationshipType.DEFINE,
-        )
-
-        self.generic_visit(node)
-        self.scope_stack.pop()
-
-    def visit_Call(self, node: ast.Call):
-        self.scope_stack.append(self._get_name(node))
-
-        print(__name__, 117, node.__dict__)
-
-        self.file.add_element(
-            self.scope_stack,
-            self._create_code_element(node),  # todo find exist node
-            relation_type=RelationshipType.USE,
         )
 
         self.generic_visit(node)
@@ -129,12 +82,37 @@ class NodeVisitor(ast.NodeVisitor):
 
         self.file.add_element(
             self.scope_stack,
+            self.scope_stack,
             self._create_code_element(node),
             relation_type=RelationshipType.DEFINE,
         )
 
         self.generic_visit(node)
         self.scope_stack.pop()
+
+    def visit_Call(self, node: ast.Call):
+        self.scope_stack.append(self._get_name(node))
+
+        keep_scope = True
+
+        if hasattr(node, "func") and hasattr(node.func, "value"):
+            keep_scope = False
+
+        # find exist node
+        scope, element = self.file.get_node(self.scope_stack, self._get_name(node))
+
+        self.file.add_element(
+            scope or self.scope_stack,
+            self.scope_stack,
+            element or self._create_code_element(node),
+            relation_type=RelationshipType.USE,
+        )
+
+        if not keep_scope:
+            self.scope_stack.pop()
+        self.generic_visit(node)
+        if keep_scope:
+            self.scope_stack.pop()
 
 
 if __name__ == "__main__":
