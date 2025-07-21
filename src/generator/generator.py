@@ -116,6 +116,14 @@ def get_node_information(node_name: str) -> str:
     )
 
 
+def get_all_functions() -> str:
+    return "\n".join([f"{a.path}:\n{a.name}" for a in list(FunctionNode.nodes)])
+
+
+def get_all_classes() -> str:
+    return "\n".join([f"{a.path}:\n{a.name}" for a in list(ClassNode.nodes)])
+
+
 def enrich_graph(graph: dict[int, Node]) -> dict[int, Node]:
     """
     Обогащает связи в графе:
