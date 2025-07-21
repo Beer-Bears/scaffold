@@ -1,6 +1,7 @@
 import ast
 import pathlib
 from pathlib import Path
+from pprint import pprint
 from typing import Dict, List
 
 from src.generator.graph_types import NodeType
@@ -28,13 +29,18 @@ class Parser:
         if not self.path.is_dir():
             raise NotADirectoryError(f"Path is not a directory: {self.path}")
 
+    def _get_ast_tree_by_file_path(self, file_path: Path) -> ast.Module:
+        content = file_path.read_text(encoding="utf-8")
+        tree = ast.parse(content, filename=str(file_path))
+        return tree
+
     def _parse_file(self, file_path: Path) -> FileGraph:
         """
         Parses a single Python file to extract its dependencies using DependencyVisitor.
         Handles potential parsing errors.
         """
-        content = file_path.read_text(encoding="utf-8")
-        tree = ast.parse(content, filename=str(file_path))
+        tree = self._get_ast_tree_by_file_path(file_path)
+        pprint(ast.dump(tree))
         visitor = NodeVisitor(file_path)
         visitor.visit(tree)
         file = visitor.file
@@ -43,7 +49,6 @@ class Parser:
         print()
 
         # file docstring
-        tree = ast.parse(content, filename=str(file_path))
         module_docstring = ast.get_docstring(tree)
         file.docstring = module_docstring
         # pprint(file.nodes)
@@ -150,9 +155,7 @@ class Parser:
 
 
 if __name__ == "__main__":
-    parser = Parser(
-        pathlib.Path("/home/dmitrii/PycharmProjects/scaffold/codebase/test")
-    )
+    parser = Parser(pathlib.Path("/home/dmitrii/PycharmProjects/scaffold/codebase"))
     parser.parse()
 
     print("\n✅ Parsing complete. Node graph generated.")

@@ -88,7 +88,7 @@ class FileGraph:
         _id = self.scope_to_id.get(scope, None)
         assert (
             _id is not None
-        ), f"Parent have to exist always: \n{self.scope_to_id}\n{self.id_to_scope}\n {_id} -> {scope}"
+        ), f"Parent have to exist always:\n  {self.scope_to_id}\n{self.id_to_scope}\n  {_id} -> {scope=} {scope_list=}"
         return _id
 
     def get_node(

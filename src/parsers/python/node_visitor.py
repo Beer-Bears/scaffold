@@ -8,37 +8,31 @@ from src.parsers.python.models import CodeElement, FileGraph
 
 def print_dict_recursive(obj, indent=1):
     if not hasattr(obj, "__dict__"):
-        # print("  " * indent + repr(obj))
+        print("  " * indent + repr(obj))
         return
     for key, value in obj.__dict__.items():
-        # print("  " * indent + f"{key}: ", end="")
+        print("  " * indent + f"{key}: ", end="")
         if hasattr(value, "__dict__"):
-            # print()
-            pass
-            # print_dict_recursive(value, indent + 1)
+            print()
+            print_dict_recursive(value, indent + 1)
         elif isinstance(value, dict):
-            pass
-            # print()
-            # print_dict_recursive_dict(value, indent + 1)
+            print()
+            print_dict_recursive_dict(value, indent + 1)
         else:
-            pass
-            # print(repr(value))
+            print(repr(value))
 
 
 def print_dict_recursive_dict(d: dict, indent=0):
     for k, v in d.items():
-        # print("  " * indent + f"{k}: ", end="")
+        print("  " * indent + f"{k}: ", end="")
         if hasattr(v, "__dict__"):
-            # print()
-            pass
-            # print_dict_recursive(v, indent + 1)
+            print()
+            print_dict_recursive(v, indent + 1)
         elif isinstance(v, dict):
-            # print()
-            pass
-            # print_dict_recursive_dict(v, indent + 1)
+            print()
+            print_dict_recursive_dict(v, indent + 1)
         else:
-            pass
-            # print(repr(v))
+            print(repr(v))
 
 
 class NodeVisitor(ast.NodeVisitor):
@@ -112,24 +106,6 @@ class NodeVisitor(ast.NodeVisitor):
         self.generic_visit(node)
         self.scope_stack.pop()
 
-    def visit_Call(self, node: ast.Call):
-        self.scope_stack.append(self._get_name(node))
-
-        print(__name__, 117, node.__dict__)
-
-        # find exist node
-        scope, element = self.file.get_node(self.scope_stack, self._get_name(node))
-
-        self.file.add_element(
-            scope or self.scope_stack,
-            self.scope_stack,
-            element or self._create_code_element(node),
-            relation_type=RelationshipType.USE,
-        )
-
-        self.generic_visit(node)
-        self.scope_stack.pop()
-
     def visit_AsyncFunctionDef(self, node: ast.AsyncFunctionDef):
         self.scope_stack.append(node.name)
 
@@ -142,6 +118,35 @@ class NodeVisitor(ast.NodeVisitor):
 
         self.generic_visit(node)
         self.scope_stack.pop()
+
+    def visit_Call(self, node: ast.Call):
+        self.scope_stack.append(self._get_name(node))
+
+        keep_scope = True
+
+        if hasattr(node, "func") and hasattr(node.func, "value"):
+            keep_scope = False
+
+        print("\n[visit Call] node_vistor, 118")
+        print_dict_recursive(node)
+        print(f"{self.scope_stack=}")
+
+        # find exist node
+        scope, element = self.file.get_node(self.scope_stack, self._get_name(node))
+        print(f"Find exist node: {scope=} , {element=}")
+        print()
+        self.file.add_element(
+            scope or self.scope_stack,
+            self.scope_stack,
+            element or self._create_code_element(node),
+            relation_type=RelationshipType.USE,
+        )
+
+        if not keep_scope:
+            self.scope_stack.pop()
+        self.generic_visit(node)
+        if keep_scope:
+            self.scope_stack.pop()
 
 
 if __name__ == "__main__":

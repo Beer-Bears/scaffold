@@ -283,6 +283,14 @@ class DbRelations:
             case FunctionNode(), FunctionNode(), RelationshipType.USE:
                 parent.uses_methods.connect(child)
 
+            # IMPORT
+            case FileNode(), FileNode(), RelationshipType.IMPORT:
+                parent.imports_files.connect(child)
+            case FileNode(), ClassNode(), RelationshipType.IMPORT:
+                parent.imports_classes.connect(child)
+            case FileNode(), FunctionNode(), RelationshipType.IMPORT:
+                parent.imports_methods.connect(child)
+
             case _:
                 raise ValueError(
                     f"Unsupported combination:\n"

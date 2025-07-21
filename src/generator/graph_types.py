@@ -11,3 +11,4 @@ class NodeType(str, Enum):
 class RelationshipType(str, Enum):
     DEFINE = "DEFINE"
     USE = "USE"
+    IMPORT = "IMPORT"
