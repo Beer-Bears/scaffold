@@ -50,7 +50,6 @@ class Parser:
         # file docstring
         module_docstring = ast.get_docstring(tree)
         file.docstring = module_docstring
-
         return file
 
     def parse(self):
@@ -152,7 +151,7 @@ class Parser:
 
 
 if __name__ == "__main__":
-    parser = Parser(pathlib.Path("/home/dmitrii/PycharmProjects/scaffold/codebase"))
+    parser = Parser(pathlib.Path("codebase"))
     parser.parse()
 
     print("\n✅ Parsing complete. Node graph generated.")
