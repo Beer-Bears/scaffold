@@ -2,6 +2,8 @@ FROM python:3.13-slim
 
 WORKDIR /app
 
+RUN mkdir codebase
+
 RUN pip install poetry
 
 COPY pyproject.toml poetry.lock ./
