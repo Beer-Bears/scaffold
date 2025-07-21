@@ -126,6 +126,12 @@ The `env` block in the JSON is where you customize the server for your environme
     -   Finds a code entity (file, class, or function) by its name.
     -   Returns a rich context block including its source code, docstrings, structural relationships (e.g., "defines method X", "uses class Y"), and relevant vector chunks from the codebase.
 
+-   `get_all_functions_nodes_names`
+    -   Return all functions names and its path in project.
+
+-   `get_all_classes_nodes_names`
+    -   Return all classes names and its path in project.
+
 ### Usage Examples
 
 You can now ask your AI agent to use the Scaffold tool with prompts like:
