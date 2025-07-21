@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 class ChangeHandler(FileSystemEventHandler):
     """A sophisticated file event handler that debounces events to prevent redundant indexing."""
 
-    def __init__(self, watch_path: str | Path, debounce_interval: int = 2):
+    def __init__(self, watch_path: str | Path, debounce_interval: int = 15):
         super().__init__()
         self.watch_path = Path(watch_path)
         self.debounce_interval = debounce_interval
@@ -59,7 +59,7 @@ class ChangeHandler(FileSystemEventHandler):
             chunk_and_load_single_file(path)
 
         if deletions or creations or modifications:
-            run_indexing(str(self.watch_path))
+            run_indexing(self.watch_path)
 
         logger.info("File change processing finished.")
 
