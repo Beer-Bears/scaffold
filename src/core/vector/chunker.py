@@ -1,9 +1,12 @@
+import logging
 import os
+import time
 
 from llama_index.core import SimpleDirectoryReader, StorageContext, VectorStoreIndex
 from llama_index.vector_stores.chroma import ChromaVectorStore
 
 from src.core.config import get_settings
+from src.core.vector.index import get_existing_chroma_index
 
 # SimpleDirectoryReader
 # https://docs.llamaindex.ai/en/stable/module_guides/loading/simpledirectoryreader/#simpledirectoryreader
@@ -12,6 +15,41 @@ settings = get_settings().vector
 
 def get_meta(file_path):
     return {"file_path": file_path}
+
+
+logger = logging.getLogger(__name__)
+
+
+def chunk_and_load_single_file(file_path: str) -> VectorStoreIndex:
+    """
+    Processes a single file, splits it into chunks, and appends it into ChromaDB.
+    """
+    logging.basicConfig(level=logging.INFO)
+    logger.info(f"[Indexer] Chunking process starting... file_path={file_path}")
+    start_time = time.time()
+
+    # Load your already‑created index
+    index = get_existing_chroma_index()
+
+    # Read your file into llama‑index Documents
+    reader = SimpleDirectoryReader(input_files=[file_path], file_metadata=get_meta)
+
+    duration = time.time() - start_time
+    logger.info(f"[Indexer] Chunking process finished in {duration:.2f} seconds.")
+
+    documents = reader.load_data(show_progress=True, num_workers=16)
+
+    duration = time.time() - start_time
+    logger.info(f"[Indexer] Documents are loaded in {duration:.2f} seconds.")
+
+    # Insert each new Document into the existing index
+    for doc in documents:
+        index.insert(doc)
+
+    duration = time.time() - start_time
+    logger.info(f"[Indexer] Documents are inserted in {duration:.2f} seconds.")
+
+    return index
 
 
 def chunk_and_load_to_vectorstore(

@@ -41,8 +41,6 @@ class ImportNodeVisitor(ast.NodeVisitor):
 
         for imported_module_str in imported_modules_str:
 
-            print(imported_module_str)
-
             imported_file_path, imported_module_path = self.module_to_py_path(
                 imported_module_str
             )
@@ -56,22 +54,10 @@ class ImportNodeVisitor(ast.NodeVisitor):
                     imported_module_path
                 )
 
-            if matched:  # case 3
-
-                print(
-                    __name__,
-                    46,
-                    imported_module_str,
-                    matched,
-                    imported_file_id,
-                    imported_file,
-                )
-
+            if matched:
                 self.add_import_relation(
                     importing=importing_file_id, imported=imported_file_id
                 )
-
-        print(f"Import Node:\n\t{[alias.__dict__ for alias in node.__dict__['names']]}")
 
     def visit_ImportFrom(self, node: ast.ImportFrom):
         """
@@ -118,11 +104,6 @@ class ImportNodeVisitor(ast.NodeVisitor):
                     importing=importing_file_id, imported=imported_node_id
                 )
 
-        print(
-            f"Import From Node:\n\tFrom `{'./' * node.__dict__['level']}{node.__dict__['module']}` Import {[alias.__dict__['name'] for alias in node.__dict__['names']]}"
-        )
-        print("\t", module, level, imported_nodes_str)
-
     def match_file_by_path(
         self, path: str
     ) -> Tuple[bool, Optional[int], Optional[Node]]:
@@ -151,8 +132,6 @@ class ImportNodeVisitor(ast.NodeVisitor):
         for node_id in [r.node for r in file.relationships]:
             if self.nodes[node_id].meta.name == imported_node_str:
                 return node_id
-
-        print(__name__, 114, file.meta.name, imported_node_str, "Not found!")
 
     def module_to_py_path(self, module: str) -> Tuple[str, str]:
         """

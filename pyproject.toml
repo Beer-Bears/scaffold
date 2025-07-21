@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "scaffold"
-version = "0.1.1"
+version = "0.1.2"
 description = ""
 authors = ["Beer Bears"]
 readme = "README.md"
@@ -15,6 +15,7 @@ neomodel = "^5.5.0"
 chromadb = "^1.0.13"
 posthog = "<6.0.0"
 torch = {version = "^2.4.0", source = "pytorch-cpu"}
+watchdog = "^4.0.1"
 
 llama-index-core = "^0.12.49"
 llama-index-vector-stores-chroma = "^0.4.2"

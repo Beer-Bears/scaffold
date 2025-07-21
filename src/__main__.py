@@ -1,33 +1,24 @@
-import pathlib
+import logging
+import os
+import threading
+from pathlib import Path
 
 from src.core.config import get_settings
-from src.core.vector.chunker import chunk_and_load_to_vectorstore
-from src.database.connection import init_chromadb, init_neo4j
-from src.database.health import check_neo4j
-from src.generator.generator import save_graph_to_db
+from src.core.indexer import run_full_indexing
+from src.core.watcher import start_watcher
 from src.mcp.server import mcp
-from src.parsers.python.core import Parser
 
+logger = logging.getLogger(__name__)
 settings = get_settings()
-
 PROJECT_PATH = "./codebase/"
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
 
-    init_neo4j()
-    check_neo4j()
+    abspath = os.path.abspath(PROJECT_PATH)
+    run_full_indexing(Path(abspath))
 
-    parser = Parser(pathlib.Path(PROJECT_PATH))
-    parser.parse()
+    w = threading.Thread(target=start_watcher, args=(abspath,), daemon=True)
+    w.start()
 
-    # TODO: Remove double indexing
-    save_graph_to_db(parser.nodes)
-    vectorstore = init_chromadb()
-
-    chunk_and_load_to_vectorstore(
-        vector_store=vectorstore,
-        root_dir=PROJECT_PATH,
-    )
-
-    # MCP Inteface
     mcp.run(**settings.mcp_server.model_dump())

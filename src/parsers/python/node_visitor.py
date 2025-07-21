@@ -1,6 +1,5 @@
 import ast
 import pathlib
-from pprint import pprint
 
 from src.generator.graph_types import NodeType, RelationshipType
 from src.parsers.python.models import CodeElement, FileGraph
@@ -48,7 +47,6 @@ class NodeVisitor(ast.NodeVisitor):
             end_line=getattr(node, "end_lineno", node.lineno),
             docstring="",  # todo
         )
-        print(__name__, 86, element)
         return element
 
     def visit_FunctionDef(self, node: ast.FunctionDef):
@@ -125,4 +123,3 @@ if __name__ == "__main__":
 
         v = NodeVisitor(path.name)
         v.visit(tree)
-        pprint(v.file.relations)
