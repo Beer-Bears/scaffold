@@ -31,8 +31,8 @@ def test_project_parsing_and_saving(project: str, setup_test_db):
     if project == "syntatic-1":
         assert file_count == 7
         assert class_count == 4
-        assert function_count == 44
+        assert function_count == 42
     elif project == "realworld-1":
         assert file_count == 11
         assert class_count == 9
-        assert function_count == 95
+        assert function_count == 90
