@@ -17,7 +17,7 @@ posthog = "<6.0.0"
 torch = {version = "^2.4.0", source = "pytorch-cpu"}
 watchdog = "^4.0.1"
 
-llama-index-core = "^0.12.49"
+llama-index-core = "^0.12.51"
 llama-index-vector-stores-chroma = "^0.4.2"
 llama-index-embeddings-huggingface = "^0.5.5"
 llama-index-llms-openai = "^0.4.7"
