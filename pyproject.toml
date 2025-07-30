@@ -8,7 +8,7 @@ package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.11"
-neo4j = "^5.28.1"
+neo4j = "^5.28.2"
 pydantic-settings = "^2.10.0"
 fastmcp = "^2.10.5"
 neomodel = "^5.5.0"
