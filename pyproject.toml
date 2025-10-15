@@ -14,7 +14,7 @@ fastmcp = "^2.10.5"
 neomodel = "^5.5.0"
 chromadb = "^1.0.13"
 posthog = "<6.0.0"
-torch = {version = "^2.4.0", source = "pytorch-cpu"}
+torch = {version = "^2.9.0+cpu", source = "pytorch-cpu"}
 watchdog = "^6.0.0"
 
 llama-index-core = "^0.12.52"
