@@ -29,7 +29,7 @@ url = "https://download.pytorch.org/whl/cpu"
 priority = "supplemental"
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^8.4.1"
+pytest = "^9.1.1"
 pytest-asyncio = "^1.1.0"
 pre-commit = "^4.2.0"
 testcontainers = "^4.9.0"
